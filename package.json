@@ -10,15 +10,55 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:JAMVariableNaming.helloWorld"
+		"onCommand:JAMVarNaming.AlVarNameSel",
+		"onCommand:JAMVarNaming.AlVarNameAll",
+		"onCommand:JAMVarNaming.CatchDocumentChanges",
+		"onCommand:JAMVarNaming.StopCatchDocumentChanges"
 	],
 	"main": "./extension.js",
 	"contributes": {
+		"configuration": {
+			"title": "JAM AL Naming",
+			"properties": {
+				"CharsFrom": {
+					"type": "string",
+					"default": "áéíóúÁÉÍÓÚ",
+					"description": "Chars to substitute in AL Naming"
+				},
+				"CharsTo": {
+					"type": "string",
+					"default": "aeiouAEIOU",
+					"description": "Chars to substitute in AL Naming"
+				},
+				"AppPrefix": {
+					"type": "string",
+					"default": "",
+					"description": "Application prefix for objects"
+				},
+				"ExcludePrefixInRename": {
+					"type": "boolean",
+					"default": true,
+					"description": "Exclude App prefix in AL variable renaming"
+				}
+			}
+		},
 		"commands": [
 			{
-				"command": "JAMVariableNaming.helloWorld",
-				"title": "Hello World"
-			}
+				"command": "JAMVarNaming.AlVarNameSel",
+				"title": "JAM ALVar Selection Variable Naming"
+			},
+			{
+				"command": "JAMVarNaming.AlVarNameAll",
+				"title": "JAM ALVar Document Variable Naming"
+			},
+			{
+				"command": "JAMVarNaming.CatchDocumentChanges",
+				"title": "JAM ALVar Begin AL Var editing mode"
+			},
+			{
+				"command": "JAMVarNaming.StopCatchDocumentChanges",
+				"title": "JAM ALVar Stop AL Var editing mode"
+			}			
 		]
 	},
 	"scripts": {

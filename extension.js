@@ -9,22 +9,48 @@ const vscode = require('vscode');
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "JAMVariableNaming" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('JAMVariableNaming.helloWorld', function () {
+	let disposableSelection = vscode.commands.registerCommand('JAMVarNaming.AlVarNameSel', function () {
 		// The code you place here will be executed every time your command is executed
-
 		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from JAMVariableNaming!');
-	});
+		//changeSelection2();
+		const rename = require('./src/RenameVars.js');
+		rename.changeSelection();
+	});	
+	context.subscriptions.push(disposableSelection);	
 
-	context.subscriptions.push(disposable);
+	let disposableAll = vscode.commands.registerCommand('JAMVarNaming.AlVarNameAll', function () {
+		//Test v1:Record  "S H";
+		vscode.window.showInputBox({
+			placeHolder: "Are you sure to rename all variables of documents (Y/N)?"
+		  }).then(value=>
+			{
+				if (value.match(/Y/i))
+				{
+					const rename = require('./src/RenameVars.js');					
+					rename.changeAll();
+				}
+			});		
+	});
+	context.subscriptions.push(disposableAll);
+
+	let disposableCatchDocumentChanges = vscode.commands.registerCommand('JAMVarNaming.CatchDocumentChanges', function () {
+		// The code you place here will be executed every time your command is executed
+		// Display a message box to the user
+		//changeSelection2();
+		const rename = require('./src/RenameVars.js');
+		rename.CatchDocumentChanges();
+	});	
+	context.subscriptions.push(disposableCatchDocumentChanges);	
+
+	let disposableStopCatchDocumentChanges = vscode.commands.registerCommand('JAMVarNaming.StopCatchDocumentChanges', function () {
+		// The code you place here will be executed every time your command is executed
+		// Display a message box to the user
+		//changeSelection2();
+		const rename = require('./src/RenameVars.js');
+		rename.StopCatchDocumentChanges();
+	});	
+	context.subscriptions.push(disposableStopCatchDocumentChanges);	
+
 }
 // @ts-ignore
 exports.activate = activate;

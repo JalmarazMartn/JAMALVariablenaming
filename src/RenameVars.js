@@ -1,4 +1,6 @@
 const vscode = require('vscode');
+var subscriptionOnDidChange = vscode.workspace.onDidChangeTextDocument(HandleDocumentChanges);
+subscriptionOnDidChange.dispose();
 module.exports = {
 	changeSelection: async function () {
 		var currEditor = vscode.window.activeTextEditor;
@@ -6,13 +8,10 @@ module.exports = {
 		const startLine = selection.start.line;
 		const endLine = selection.end.line;
 		let CurrDoc = currEditor.document;
-		//const WSEdit = new vscode.WorkspaceEdit;	
 
 		for (var i = startLine; i <= endLine; i++) {
 			await lineProcess(i, CurrDoc);
 		}
-		//const CharsFrom = vscode.workspace.getConfiguration('JAMALUtilities', vscode.workspace.workspaceFolders[0].uri);
-		//vscode.workspace.applyEdit(WSEdit);	
 		GetExtensionConf();
 
 	},
@@ -23,11 +22,18 @@ module.exports = {
 		for (var i = 0; i < CurrDoc.lineCount; i++) {
 			await lineProcess(i, CurrDoc);
 		}
-	},
+	},	
 	GetRegExpVarDeclaration: function (IsGlobal=false){
 		return(GetRegExpVarDeclaration(IsGlobal));
-	}	
-
+	},
+	CatchDocumentChanges: function()
+	{
+		CatchDocumentChanges();
+	},
+	StopCatchDocumentChanges: function()
+	{
+		StopCatchDocumentChanges();
+	}
 }
 async function lineProcess(i, CurrDoc) {
 	var line = CurrDoc.lineAt(i);
@@ -120,4 +126,29 @@ function GetAppPrefix()
         vscode.window.showErrorMessage("You must specify a value for AppPrefix in extension settings");
     }
     return(AppPrefix);    
+}
+function HandleDocumentChanges(event)
+{
+        console.log(event);
+        if (event.contentChanges[0].text.charCodeAt(0) == 13)
+        {
+            console.log('Intro');
+            console.log(event.contentChanges[0].range.end);
+			const lineNumber = event.contentChanges[0].range.end.line;
+			lineProcess(lineNumber,event.document);
+            const WSEdit = new vscode.WorkspaceEdit;
+            const NewPosition = new vscode.Position(lineNumber + 1,0);
+            WSEdit.insert(event.document.uri,NewPosition,'v1: ');
+            vscode.workspace.applyEdit(WSEdit);
+        }
+
+      //subscription.dispose(); // stop listening
+}
+function CatchDocumentChanges()
+{
+      subscriptionOnDidChange = vscode.workspace.onDidChangeTextDocument(HandleDocumentChanges);
+}
+function StopCatchDocumentChanges()
+{
+    subscriptionOnDidChange.dispose();
 }
