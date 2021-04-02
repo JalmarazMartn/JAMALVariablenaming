@@ -129,26 +129,58 @@ function GetAppPrefix()
 }
 function HandleDocumentChanges(event)
 {
-        console.log(event);
-        if (event.contentChanges[0].text.charCodeAt(0) == 13)
-        {
-            console.log('Intro');
-            console.log(event.contentChanges[0].range.end);
-			const lineNumber = event.contentChanges[0].range.end.line;
-			lineProcess(lineNumber,event.document);
-            const WSEdit = new vscode.WorkspaceEdit;
-            const NewPosition = new vscode.Position(lineNumber + 1,0);
-            WSEdit.insert(event.document.uri,NewPosition,'v1: ');
-            vscode.workspace.applyEdit(WSEdit);
-        }
-
-      //subscription.dispose(); // stop listening
+        if (event.contentChanges[0].text.charCodeAt(0) !== 13)
+		{
+			return;
+		}
+		const LineNumber = event.contentChanges[0].range.end.line;
+		PutTailSemicolon(event.document,LineNumber);		
+		lineProcess(LineNumber,event.document);
+		const WSEdit = new vscode.WorkspaceEdit;
+		const NewColumn = event.document.lineAt(LineNumber + 1).text.length;
+		const NewPosition = new vscode.Position(LineNumber + 1,NewColumn);
+		WSEdit.insert(event.document.uri,NewPosition,'WriteTypeAndSubtype: ');
+		vscode.workspace.applyEdit(WSEdit);
 }
 function CatchDocumentChanges()
 {
-      subscriptionOnDidChange = vscode.workspace.onDidChangeTextDocument(HandleDocumentChanges);
+    WriteVarHeader();  
+	subscriptionOnDidChange = vscode.workspace.onDidChangeTextDocument(HandleDocumentChanges);
 }
 function StopCatchDocumentChanges()
 {
     subscriptionOnDidChange.dispose();
+}
+function WriteVarHeader()
+{
+	var currEditor = vscode.window.activeTextEditor;
+	var selection = currEditor.selection;
+	const startLine = selection.start.line;
+	let CurrDoc = currEditor.document;
+	if (CurrDoc.lineAt(startLine).text !== '')
+	{
+		return;
+	}
+	const WSEdit = new vscode.WorkspaceEdit;
+	const NewColumn = CurrDoc.lineAt(startLine).text.length;
+	const NewPosition = new vscode.Position(startLine,NewColumn);
+	WSEdit.insert(CurrDoc.uri,NewPosition,'var');
+	vscode.workspace.applyEdit(WSEdit);
+}
+function PutTailSemicolon(document,LineNumber)
+{
+	const LineText = document.lineAt(LineNumber).text;
+	const LineTextWithColon = LineText + ';';
+	if (LineText.search(GetRegExpVarDeclaration(true)) >= 0)
+	{
+		return;
+	}
+	if (LineTextWithColon.search(GetRegExpVarDeclaration(true)) < 0)
+	{
+		return;
+	}
+	const WSEdit = new vscode.WorkspaceEdit;	
+	const NewPosition = new vscode.Position(LineNumber,LineText.length);
+	WSEdit.insert(document.uri,NewPosition,';');
+	vscode.workspace.applyEdit(WSEdit);
 }
