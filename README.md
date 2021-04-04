@@ -11,7 +11,7 @@ For this purpose, we have these commands:
 
 ### JAL Var Begin AL variable editing mode
 
-![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/IntroWithVarMode.gif)
+![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/IntroWithVarMode.gif?raw=true)
 
 With this command, we begin the variable editing: If we are in a blank line it puts “var” line.
 First intro puts this text in your editor: “WriteTypeAndSubtype: “
@@ -27,7 +27,7 @@ If you want to disable this mode you can execute with F1 "JAL Var Stop AL variab
 This command renames the variables in editor selection. Notice that this command executes a symbol renaming. It means that if you have declared and used the variable in its scope rename the variable using too:
 
 
-![alt text](/images/SelRename.gif)
+![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/SelRename.gif?raw=true)
 
 ## Requirements
 
