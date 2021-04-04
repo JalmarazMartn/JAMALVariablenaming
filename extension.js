@@ -9,7 +9,7 @@ const vscode = require('vscode');
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
-	let disposableSelection = vscode.commands.registerCommand('JAMVarNaming.AlVarNameSel', function () {
+	let disposableSelection = vscode.commands.registerCommand('JALVarNaming.AlVarNameSel', function () {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
 		//changeSelection2();
@@ -18,7 +18,7 @@ function activate(context) {
 	});	
 	context.subscriptions.push(disposableSelection);	
 
-	let disposableAll = vscode.commands.registerCommand('JAMVarNaming.AlVarNameAll', function () {
+	let disposableAll = vscode.commands.registerCommand('JALVarNaming.AlVarNameAll', function () {
 		//Test v1:Record  "S H";
 		vscode.window.showInputBox({
 			placeHolder: "Are you sure to rename all variables of documents (Y/N)?"
@@ -33,7 +33,7 @@ function activate(context) {
 	});
 	context.subscriptions.push(disposableAll);
 
-	let disposableCatchDocumentChanges = vscode.commands.registerCommand('JAMVarNaming.CatchDocumentChanges', function () {
+	let disposableCatchDocumentChanges = vscode.commands.registerCommand('JALVarNaming.CatchDocumentChanges', function () {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
 		//changeSelection2();
@@ -42,7 +42,7 @@ function activate(context) {
 	});	
 	context.subscriptions.push(disposableCatchDocumentChanges);	
 
-	let disposableStopCatchDocumentChanges = vscode.commands.registerCommand('JAMVarNaming.StopCatchDocumentChanges', function () {
+	let disposableStopCatchDocumentChanges = vscode.commands.registerCommand('JALVarNaming.StopCatchDocumentChanges', function () {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
 		//changeSelection2();

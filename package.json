@@ -1,6 +1,6 @@
 {
-	"name": "JAMVariableNaming",
-	"displayName": "JAMVariableNaming",
+	"name": "JALVariableNaming",
+	"displayName": "JAL Variable Naming",
 	"description": "Ease AL Naming following BC rules",
 	"version": "0.0.1",
 	"engines": {
@@ -10,15 +10,14 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:JAMVarNaming.AlVarNameSel",
-		"onCommand:JAMVarNaming.AlVarNameAll",
-		"onCommand:JAMVarNaming.CatchDocumentChanges",
-		"onCommand:JAMVarNaming.StopCatchDocumentChanges"
+		"onCommand:JALVarNaming.AlVarNameSel",
+		"onCommand:JALVarNaming.CatchDocumentChanges",
+		"onCommand:JALVarNaming.StopCatchDocumentChanges"
 	],
 	"main": "./extension.js",
 	"contributes": {
 		"configuration": {
-			"title": "JAM AL Naming",
+			"title": "JAL AL Naming",
 			"properties": {
 				"CharsFrom": {
 					"type": "string",
@@ -44,20 +43,16 @@
 		},
 		"commands": [
 			{
-				"command": "JAMVarNaming.AlVarNameSel",
-				"title": "JAM ALVar Selection Variable Naming"
+				"command": "JALVarNaming.AlVarNameSel",
+				"title": "JAL Var Selection variable Naming"
 			},
 			{
-				"command": "JAMVarNaming.AlVarNameAll",
-				"title": "JAM ALVar Document Variable Naming"
+				"command": "JALVarNaming.CatchDocumentChanges",
+				"title": "JAL Var Begin AL Var editing mode"
 			},
 			{
-				"command": "JAMVarNaming.CatchDocumentChanges",
-				"title": "JAM ALVar Begin AL Var editing mode"
-			},
-			{
-				"command": "JAMVarNaming.StopCatchDocumentChanges",
-				"title": "JAM ALVar Stop AL Var editing mode"
+				"command": "JALVarNaming.StopCatchDocumentChanges",
+				"title": "JAL Var Stop AL variable editing mode"
 			}			
 		]
 	},
