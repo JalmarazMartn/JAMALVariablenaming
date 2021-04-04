@@ -27,7 +27,7 @@ If you want to disable this mode you can execute with F1 "JAL Var Stop AL variab
 This command renames the variables in editor selection. Notice that this command executes a symbol renaming. It means that if you have declared and used the variable in its scope rename the variable using too:
 
 
-![alt text](./images/IntroWithVarMode.gif)
+![alt text](/images/SelRename.gif)
 
 ## Requirements
 
