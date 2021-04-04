@@ -4,10 +4,27 @@ This extension eases AL business central variable naming following its own codin
 
 ## Features
 
+For this purpose, we have these commands:
+* `JAL Var Begin AL variable editing mode`
+* `JAL Var Stop AL variable editing mode`
+* `JAL Var Selection variable naming`
 
-For example if there is an image subfolder under your extension project workspace:
+### JAL Var Begin AL variable editing mode
 
 ![alt text](./images/IntroWithVarMode.gif)
+
+With this command, we begin the variable editing: If we are in a blank line it puts “var” line.
+First intro puts this text in your editor: “WriteTypeAndSubtype: “
+When you write type and subtype and push intro key, editing mode make this job:
+* Rename the variable to Al naming formatting rules: from “WriteTypeAndSubtype” to “Customer”.
+* Place tail semicolon in variable declaration.
+* In next line write the text  “WriteTypeAndSubtype: “
+
+If you want to disable this mode you can execute with F1 "JAL Var Stop AL variable editing mode" command.
+
+### JAL Var Selection variable naming.
+
+This command renames the variables in editor selection. Notice that this command executes a symbol renaming. It means that if you have declared and used the variable in its scope rename the variable using too:
 
 
 ![alt text](./images/SelRename.gif)
