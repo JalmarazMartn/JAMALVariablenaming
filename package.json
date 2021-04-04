@@ -44,11 +44,11 @@
 		"commands": [
 			{
 				"command": "JALVarNaming.AlVarNameSel",
-				"title": "JAL Var Selection variable Naming"
+				"title": "JAL Var Selection variable naming"
 			},
 			{
 				"command": "JALVarNaming.CatchDocumentChanges",
-				"title": "JAL Var Begin AL Var editing mode"
+				"title": "JAL Var Begin AL variable editing mode"
 			},
 			{
 				"command": "JALVarNaming.StopCatchDocumentChanges",
