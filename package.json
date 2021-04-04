@@ -2,9 +2,15 @@
 	"name": "JALVariableNaming",
 	"displayName": "JAL Variable Naming",
 	"description": "Ease AL Naming following BC rules",
+	"publisher": "Jalmaraz",
 	"version": "0.0.1",
+	"repository": "{https://github.com/JalmarazMartn/JAMALVariablenaming}",
 	"engines": {
 		"vscode": "^1.46.0"
+	},
+	"author": {
+		"name": "Jesús Almaraz martín",
+		"email": "JalmarazMartn@gmail.com"
 	},
 	"categories": [
 		"Other"
