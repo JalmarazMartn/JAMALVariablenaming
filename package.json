@@ -5,6 +5,7 @@
 	"publisher": "JessAlmarazMartin",
 	"version": "0.0.1",
 	"repository": "https://github.com/JalmarazMartn/JAMALVariablenaming/",	
+	"icon": ".\images\Tipsa.png",
 	"engines": {
 		"vscode": "^1.46.0"
 	},
