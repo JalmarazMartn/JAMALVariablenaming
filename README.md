@@ -38,7 +38,7 @@ VSCode and Al language. This last is not a real pre-requisite, but do not make s
 This extension contributes the following settings:
 
 * `CharsFrom` `CharsTo`: Future feature to transform local language chars.
-* `ExcludePrefixInRename`: Set true (default) to exclude your prefix from renaming.
+* `ExcludePrefixInRename`: Set true (default false) to exclude your prefix from renaming.
 * `AppPrefix`: Set here your App prefix to exclude it in renaming (see previous setting).
 
 ## Known Issues
@@ -49,12 +49,11 @@ Calling out known issues can help limit users opening duplicate issues against y
 ## Release Notes
 
 
+### 0.0.1
 
-### 1.0.0
+Initial commit
 
+### 0.0.2
 
-
-### 1.0.1
-
-Fixed issue #.
+To avoid further problems like this I have decided to disable by default “Exclude Prefix from rename” option. This way only people that need this would set the App prefix setting.
 
