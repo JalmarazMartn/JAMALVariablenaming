@@ -43,7 +43,7 @@
 				},
 				"ExcludePrefixInRename": {
 					"type": "boolean",
-					"default": true,
+					"default": false,
 					"description": "Exclude App prefix in AL variable renaming"
 				}
 			}
