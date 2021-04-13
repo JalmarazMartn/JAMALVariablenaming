@@ -57,3 +57,6 @@ Initial commit
 
 To avoid further problems like this I have decided to disable by default “Exclude Prefix from rename” option. This way only people that need this would set the App prefix setting.
 
+### 0.0.3
+
+Only insert 'WriteTypeAndSubtype: ' text if previous line is a var declaration or 'var' literal.

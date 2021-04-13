@@ -144,8 +144,11 @@ async function HandleDocumentChanges(event)
 		const WSEdit = new vscode.WorkspaceEdit;
 		const NewColumn = event.document.lineAt(LineNumber + 1).text.length;
 		const NewPosition = new vscode.Position(LineNumber + 1,NewColumn);
-		WSEdit.insert(event.document.uri,NewPosition,'WriteTypeAndSubtype: ');
-		await vscode.workspace.applyEdit(WSEdit);
+		if (IsALVarDeclarationLine(event.document.lineAt(LineNumber).text))
+		{
+			WSEdit.insert(event.document.uri,NewPosition,'WriteTypeAndSubtype: ');		
+			await vscode.workspace.applyEdit(WSEdit);
+		}
 }
 function CatchDocumentChanges()
 {
@@ -188,4 +191,10 @@ async function PutTailSemicolon(document,LineNumber)
 	const NewPosition = new vscode.Position(LineNumber,LineText.length);
 	WSEdit.insert(document.uri,NewPosition,';');
 	await vscode.workspace.applyEdit(WSEdit);
+}
+function IsALVarDeclarationLine(PrevLineText='')
+{
+	const IsVarLine = (PrevLineText.toLowerCase().trim() == 'var');
+	const IsDecLine = (PrevLineText.search(GetRegExpVarDeclaration(false)) >= 0)
+	return (IsVarLine || IsDecLine);
 }
