@@ -217,11 +217,13 @@ function IsALVarDeclarationLine(PrevLineText='')
 function SnippetVariableAL()
 {
 	const commandCompletion = new vscode.CompletionItem('TvarJAL');
-	//commandCompletion.kind = vscode.CompletionItemKind.Keyword;
-    commandCompletion.filterText = "TvarJAL";
-    commandCompletion.label = "TvarJAL";	
+	commandCompletion.kind = vscode.CompletionItemKind.Snippet;
+    //commandCompletion.filterText = "TJALvarRename";
+    commandCompletion.label = "talVarNaming";	
 	commandCompletion.insertText = TextWritevar;
 	commandCompletion.command = { command: 'JALVarNaming.CatchDocumentChanges', title: 'Begin variable declaration' };
+	commandCompletion.detail = 'Write type and subtype of the variable and when write semicolon will be renamed';
+	commandCompletion.documentation = 'Write type and subtype of the variable and when write semicolon will be renamed'; 
 	SnippetTrigered = true;
 	return [commandCompletion];
 }
