@@ -134,7 +134,10 @@ async function HandleDocumentChanges(event)
 		{
 			return;
 		}
-        if (event.contentChanges[0].text.charCodeAt(0) !== 13)
+		const ContentChangeText = event.contentChanges[0].text;
+		const IsReturnKey = (ContentChangeText.charCodeAt(0) == 13);
+		const IsEndOfDeclaration = ContentChangeText.search(/".*"|;|temporary/i) >= 0;
+        if (!IsReturnKey && !IsEndOfDeclaration)
 		{
 			return;
 		}
@@ -146,8 +149,11 @@ async function HandleDocumentChanges(event)
 		const NewPosition = new vscode.Position(LineNumber + 1,NewColumn);
 		if (IsALVarDeclarationLine(event.document.lineAt(LineNumber).text))
 		{
+			if (IsReturnKey)
+			{
 			WSEdit.insert(event.document.uri,NewPosition,'WriteTypeAndSubtype: ');		
 			await vscode.workspace.applyEdit(WSEdit);
+			}
 		}
 }
 function CatchDocumentChanges()
