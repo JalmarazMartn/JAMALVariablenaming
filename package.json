@@ -19,7 +19,8 @@
 	"activationEvents": [
 		"onCommand:JALVarNaming.AlVarNameSel",
 		"onCommand:JALVarNaming.CatchDocumentChanges",
-		"onCommand:JALVarNaming.StopCatchDocumentChanges"
+		"onCommand:JALVarNaming.StopCatchDocumentChanges",
+		"*"
 	],
 	"main": "./extension.js",
 	"contributes": {

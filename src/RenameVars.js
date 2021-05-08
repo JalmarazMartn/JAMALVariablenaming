@@ -1,4 +1,6 @@
 const vscode = require('vscode');
+const TextWritevar = 'WriteTypeAndSubtype: ';
+let SnippetTrigered = false;
 var subscriptionOnDidChange = vscode.workspace.onDidChangeTextDocument(HandleDocumentChanges);
 subscriptionOnDidChange.dispose();
 module.exports = {
@@ -13,7 +15,6 @@ module.exports = {
 			await lineProcess(i, CurrDoc);
 		}
 		GetExtensionConf();
-
 	},
 	changeAll: async function () {
 		var currEditor = vscode.window.activeTextEditor;
@@ -33,6 +34,10 @@ module.exports = {
 	StopCatchDocumentChanges: function()
 	{
 		StopCatchDocumentChanges();
+	},
+	SnippetVariableAL: function()
+	{
+		return(SnippetVariableAL());
 	}
 }
 async function lineProcess(i, CurrDoc) {
@@ -141,6 +146,11 @@ async function HandleDocumentChanges(event)
 		{
 			return;
 		}
+		if (SnippetTrigered)
+		{
+			SnippetTrigered = false;
+			StopCatchDocumentChanges();
+		}	
 		const LineNumber = event.contentChanges[0].range.end.line;
 		await PutTailSemicolon(event.document,LineNumber);						
 		await lineProcess(LineNumber,event.document);
@@ -151,7 +161,7 @@ async function HandleDocumentChanges(event)
 		{
 			if (IsReturnKey)
 			{
-			WSEdit.insert(event.document.uri,NewPosition,'WriteTypeAndSubtype: ');		
+			WSEdit.insert(event.document.uri,NewPosition,TextWritevar);		
 			await vscode.workspace.applyEdit(WSEdit);
 			}
 		}
@@ -203,4 +213,15 @@ function IsALVarDeclarationLine(PrevLineText='')
 	const IsVarLine = (PrevLineText.toLowerCase().trim() == 'var');
 	const IsDecLine = (PrevLineText.search(GetRegExpVarDeclaration(false)) >= 0)
 	return (IsVarLine || IsDecLine);
+}
+function SnippetVariableAL()
+{
+	const commandCompletion = new vscode.CompletionItem('TvarJAL');
+	//commandCompletion.kind = vscode.CompletionItemKind.Keyword;
+    commandCompletion.filterText = "TvarJAL";
+    commandCompletion.label = "TvarJAL";	
+	commandCompletion.insertText = TextWritevar;
+	commandCompletion.command = { command: 'JALVarNaming.CatchDocumentChanges', title: 'Begin variable declaration' };
+	SnippetTrigered = true;
+	return [commandCompletion];
 }

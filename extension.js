@@ -49,9 +49,20 @@ function activate(context) {
 		const rename = require('./src/RenameVars.js');
 		rename.StopCatchDocumentChanges();
 	});	
-	context.subscriptions.push(disposableStopCatchDocumentChanges);	
+	context.subscriptions.push(disposableStopCatchDocumentChanges);		
 
-}
+	context.subscriptions.push(vscode.languages.registerCompletionItemProvider (
+		{ language: 'al', scheme: 'file' },
+		
+		{
+		  // eslint-disable-next-line no-unused-vars
+ provideCompletionItems(document, position) {
+	const rename = require('./src/RenameVars.js');
+	return rename.SnippetVariableAL();
+
+  }		},
+		'' // trigger
+	  ));}
 // @ts-ignore
 exports.activate = activate;
 
