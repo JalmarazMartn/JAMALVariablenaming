@@ -16,7 +16,7 @@ For this purpose, we have these commands:
 With this command, we begin the variable editing: If we are in a blank line it puts “var” line.
 First intro puts this text in your editor: “WriteTypeAndSubtype: “
 When you write type and subtype and push intro key, editing mode make this job:
-* Rename the variable to Al naming formatting rules: from “WriteTypeAndSubtype” to “Customer”.
+* Rename the variable to Al naming formatting rules: from “WriteTypeAndSubtype” to “Customer”. Variable is not only renamed when you press intro key, when type semicolon for declaration ending renaming will be done too. Also will be done, when the end of declaration is detected due double quote closing in a multiple word subtype.
 * Place tail semicolon in variable declaration.
 * In next line write the text  “WriteTypeAndSubtype: “
 
@@ -28,6 +28,12 @@ This command renames the variables in editor selection. Notice that this command
 
 
 ![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/SelRename.gif?raw=true)
+
+### Snippet Code .
+
+![Snippet mode](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/SnippetStyle.gif?raw=true)
+
+Typing talVarNuming Snippet you don´t have to execute a command with F1, but this way only rename once.
 
 ## Requirements
 
@@ -60,3 +66,13 @@ To avoid further problems like this I have decided to disable by default “Excl
 ### 0.0.3
 
 Only insert 'WriteTypeAndSubtype: ' text if previous line is a var declaration or 'var' literal.
+
+### 0.0.4
+
+In a continuous search of speed in real work: variable is not only renamed when you press intro key, when type semicolon for declaration ending renaming will be done too. Also will be done, when the end of declaration is detected due double quote closing in a multiple word subtype:
+
+![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/Faster.gif?raw=true)
+
+Creation of Code Snippet talVarNaming.
+
+
