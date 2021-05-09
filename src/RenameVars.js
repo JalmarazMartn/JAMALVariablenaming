@@ -2,7 +2,9 @@ const vscode = require('vscode');
 const TextWritevar = 'WriteTypeAndSubtype: ';
 let SnippetTrigered = false;
 var subscriptionOnDidChange = vscode.workspace.onDidChangeTextDocument(HandleDocumentChanges);
+var subscriptionOnDidChangeSnp = vscode.workspace.onDidChangeTextDocument(HandleDocumentChanges);
 subscriptionOnDidChange.dispose();
+subscriptionOnDidChangeSnp.dispose();
 module.exports = {
 	changeSelection: async function () {
 		var currEditor = vscode.window.activeTextEditor;
@@ -30,6 +32,10 @@ module.exports = {
 	CatchDocumentChanges: function()
 	{
 		CatchDocumentChanges();
+	},
+	CatchDocumentChangesSnp: function()
+	{
+		CatchDocumentChangesSnp();
 	},
 	StopCatchDocumentChanges: function()
 	{
@@ -149,7 +155,7 @@ async function HandleDocumentChanges(event)
 		if (SnippetTrigered)
 		{
 			SnippetTrigered = false;
-			StopCatchDocumentChanges();
+			StopCatchDocumentChangesSnp();
 		}	
 		const LineNumber = event.contentChanges[0].range.end.line;
 		await PutTailSemicolon(event.document,LineNumber);						
@@ -171,9 +177,18 @@ function CatchDocumentChanges()
     WriteVarHeader();  
 	subscriptionOnDidChange = vscode.workspace.onDidChangeTextDocument(HandleDocumentChanges);
 }
+function CatchDocumentChangesSnp()
+{
+    WriteVarHeader();  
+	subscriptionOnDidChangeSnp = vscode.workspace.onDidChangeTextDocument(HandleDocumentChanges);
+}
 function StopCatchDocumentChanges()
 {
     subscriptionOnDidChange.dispose();
+}
+function StopCatchDocumentChangesSnp()
+{
+    subscriptionOnDidChangeSnp.dispose();
 }
 async function WriteVarHeader()
 {
@@ -216,12 +231,13 @@ function IsALVarDeclarationLine(PrevLineText='')
 }
 function SnippetVariableAL()
 {
-	const commandCompletion = new vscode.CompletionItem('TvarJAL');
+	const commandName = 'talVarNaming';
+	const commandCompletion = new vscode.CompletionItem(commandName);
 	commandCompletion.kind = vscode.CompletionItemKind.Snippet;
-    //commandCompletion.filterText = "TJALvarRename";
-    commandCompletion.label = "talVarNaming";	
+    commandCompletion.filterText = commandName;
+    commandCompletion.label = commandName;	
 	commandCompletion.insertText = TextWritevar;
-	commandCompletion.command = { command: 'JALVarNaming.CatchDocumentChanges', title: 'Begin variable declaration' };
+	commandCompletion.command = { command: 'JALVarNaming.CatchDocumentChangesSnp', title: 'Begin variable declaration' };
 	commandCompletion.detail = 'Write type and subtype of the variable and when write semicolon will be renamed';
 	commandCompletion.documentation = 'Write type and subtype of the variable and when write semicolon will be renamed'; 
 	SnippetTrigered = true;

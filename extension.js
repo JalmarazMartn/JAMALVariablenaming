@@ -42,6 +42,15 @@ function activate(context) {
 	});	
 	context.subscriptions.push(disposableCatchDocumentChanges);	
 
+	let disposableCatchDocumentChangesSnp = vscode.commands.registerCommand('JALVarNaming.CatchDocumentChangesSnp', function () {
+		// The code you place here will be executed every time your command is executed
+		// Display a message box to the user
+		//changeSelection2();
+		const rename = require('./src/RenameVars.js');
+		rename.CatchDocumentChangesSnp();
+	});	
+	context.subscriptions.push(disposableCatchDocumentChangesSnp);	
+
 	let disposableStopCatchDocumentChanges = vscode.commands.registerCommand('JALVarNaming.StopCatchDocumentChanges', function () {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
