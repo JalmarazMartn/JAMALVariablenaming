@@ -70,7 +70,7 @@ function activate(context) {
 	return rename.SnippetVariableAL();
 
   }		},
-		'' // trigger
+  'talVarNaming' // trigger
 	  ));}
 // @ts-ignore
 exports.activate = activate;
