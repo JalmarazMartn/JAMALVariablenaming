@@ -71,6 +71,10 @@ Only insert 'WriteTypeAndSubtype: ' text if previous line is a var declaration o
 
 In a continuous search of speed in real work: variable is not only renamed when you press intro key, when type semicolon for declaration ending renaming will be done too. Also will be done, when the end of declaration is detected due double quote closing in a multiple word subtype:
 
+### 0.0.5
+
+Replaced "*" by "onStartupFinished" in activationEvents for perfomance improving. 
+
 ![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/Faster.gif?raw=true)
 
 Creation of Code Snippet talVarNaming.
