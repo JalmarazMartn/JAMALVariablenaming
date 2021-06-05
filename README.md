@@ -86,4 +86,6 @@ Replaced "*" by "onStartupFinished" in activationEvents for perfomance improving
 
 Creation of Code Snippet talVarNaming.
 
+### 0.0.6
 
+Highlight in README snippet mode
