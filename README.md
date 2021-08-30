@@ -41,6 +41,10 @@ This command renames the variables in editor selection. Notice that this command
 
 ![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/SelRename.gif?raw=true)
 
+### Snippet label.
+
+Last contribution is the snippet label, to declare labels in al code. Typing "tlabel" snippet is triggered:
+![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/tlabel.gif?raw=true)
 
 ## Requirements
 
@@ -89,3 +93,7 @@ Creation of Code Snippet talVarNaming.
 ### 0.0.6
 
 Highlight in README snippet mode
+
+### 0.0.7
+
+New label variable snippet

@@ -3,7 +3,7 @@
 	"displayName": "JAL Variable Naming",
 	"description": "Ease AL Naming following BC rules",
 	"publisher": "JessAlmarazMartin",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"repository": "https://github.com/JalmarazMartn/JAMALVariablenaming",	
 	"icon": "images/Tipsa.png",
 	"engines": {
@@ -63,6 +63,12 @@
 				"command": "JALVarNaming.StopCatchDocumentChanges",
 				"title": "JAL Var Stop AL variable editing mode"
 			}			
+		],
+		"snippets": [
+			{			  
+			  "language": "al",
+			  "path": "./src/Snippets.json"
+			}
 		]
 	},
 	"scripts": {
