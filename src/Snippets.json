@@ -6,5 +6,18 @@
 			"${1: LabelName}${2|Txt,Msg,Tok,Err,Qst,Lbl|}: Label '${3:Label content text}'${4| ,\\, Locked=true|};"
 		],		
 		"description": "AL label variable declaration"
+	},
+	"AL repeat until with document lines": {
+		"scope": "al",
+		"prefix": "trepeatDocLines",
+		"body": [
+			"${1:SalesLine}.Reset();",
+			"${1:SalesLine}.SetRange(\"${2:Document Type}\",${3:SalesHeader}.\"${2:Document Type}\");",
+			"${1:SalesLine}.SetRange(\"Document No.\",${3:SalesHeader}.\"No.\");",
+			"if ${1:SalesLine}.FindSet() then",
+			"    repeat",
+			"    until ${1:SalesLine}.Next() = 0;"
+		],		
+		"description": "al Repeat-Until with document lines. filtering previously"
 	}
 }

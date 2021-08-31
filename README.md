@@ -97,3 +97,7 @@ Highlight in README snippet mode
 ### 0.0.7
 
 New label variable snippet
+
+### 0.0.8
+
+New repeat-until snippet, looping into document line table.
