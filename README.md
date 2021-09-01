@@ -101,3 +101,7 @@ New label variable snippet
 ### 0.0.8
 
 New repeat-until snippet, looping into document line table.
+
+### 0.0.9
+
+Improvement in label variable snippet suggested by Krzysztof Bialowas. Add comment in label declaration.

@@ -3,7 +3,7 @@
 		"scope": "al",
 		"prefix": "tlabel",
 		"body": [
-			"${1: LabelName}${2|Txt,Msg,Tok,Err,Qst,Lbl|}: Label '${3:Label content text}'${4| ,\\, Locked=true|};"
+			"${1: LabelName}${2|Txt,Msg,Tok,Err,Qst,Lbl|}: Label '${3:Label content text}'${4| ,\\, Comment=''|}${5| ,\\, Locked=true|};"
 		],		
 		"description": "AL label variable declaration"
 	},
