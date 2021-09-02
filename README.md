@@ -105,3 +105,7 @@ New repeat-until snippet, looping into document line table.
 ### 0.0.9
 
 Improvement in label variable snippet suggested by Krzysztof Bialowas. Add comment in label declaration.
+
+### 0.0.10
+
+Improve repeat document lines snippets
