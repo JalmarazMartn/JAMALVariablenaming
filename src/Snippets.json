@@ -11,13 +11,37 @@
 		"scope": "al",
 		"prefix": "trepeatDocLines",
 		"body": [
-			"${2:${1|Sales,Purchase,Assembly,Service,SalesShipment,SalesInvoice,SalesCrMemo,PurchRcpt,PurchInv,PurchCrMemo,Transfer,TransferShipment,TransferReceipt,ReturnShipment,ReturnReceipt|}Line}.Reset();",
+			"${2:${1|SalesShipment,SalesInvoice,SalesCrMemo,PurchRcpt,PurchInv,PurchCrMemo,Transfer,TransferShipment,TransferReceipt,ReturnShipment,ReturnReceipt|}Line}.Reset();",
+			"${2:SalesLine}.SetRange(\"Document No.\",${3:${1:Sales}Header}.\"No.\");",
+			"if ${2:SalesLine}.FindSet() then",
+			"    repeat",
+			"    until ${2:SalesLine}.Next() = 0;"
+		],		
+		"description": "al Repeat-Until with document lines. filtering previously"
+	},
+	"AL repeat until with document lines, and field Document Type": {
+		"scope": "al",
+		"prefix": "trepeatDocLinesWithDocType",
+		"body": [
+			"${2:${1|Sales,Purchase,Assembly,Service|}Line}.Reset();",
 			"${2:SalesLine}.SetRange(\"${3:Document Type}\",${4:${1:Sales}Header}.\"${3:Document Type}\");",
 			"${2:SalesLine}.SetRange(\"Document No.\",${4:SalesHeader}.\"No.\");",
 			"if ${2:SalesLine}.FindSet() then",
 			"    repeat",
 			"    until ${2:SalesLine}.Next() = 0;"
 		],		
-		"description": "al Repeat-Until with document lines. filtering previously"
-	}
+		"description": "al Repeat-Until with document lines with Document Type field. filtering previously"
+	},
+	"AL repeat until with Warehouse document lines": {
+		"scope": "al",
+		"prefix": "trepeatWhseDocLines",
+		"body": [
+			"${2:${1|WarehouseActivity,RegisteredWhseActivity,WarehouseReceipt,PostedWhseReceipt,WarehouseShipment,PostedWhseShipment,WhseInternalPutaway,WhseInternalPick|}Line}.Reset();",
+			"${2:SalesLine}.SetRange(\"No.\",${3:${1:Sales}Header}.\"No.\");",
+			"if ${2:SalesLine}.FindSet() then",
+			"    repeat",
+			"    until ${2:SalesLine}.Next() = 0;"
+		],		
+		"description": "al Repeat-Until with warehouse document lines. filtering previously"
+	}	
 }
