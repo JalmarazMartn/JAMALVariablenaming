@@ -11,12 +11,12 @@
 		"scope": "al",
 		"prefix": "trepeatDocLines",
 		"body": [
-			"${1:SalesLine}.Reset();",
-			"${1:SalesLine}.SetRange(\"${2:Document Type}\",${3:SalesHeader}.\"${2:Document Type}\");",
-			"${1:SalesLine}.SetRange(\"Document No.\",${3:SalesHeader}.\"No.\");",
-			"if ${1:SalesLine}.FindSet() then",
+			"${2:${1|Sales,Purchase,Assembly,Service,SalesShipment,SalesInvoice,SalesCrMemo,PurchRcpt,PurchInv,PurchCrMemo,Transfer,TransferShipment,TransferReceipt,ReturnShipment,ReturnReceipt|}Line}.Reset();",
+			"${2:SalesLine}.SetRange(\"${3:Document Type}\",${4:${1:Sales}Header}.\"${3:Document Type}\");",
+			"${2:SalesLine}.SetRange(\"Document No.\",${4:SalesHeader}.\"No.\");",
+			"if ${2:SalesLine}.FindSet() then",
 			"    repeat",
-			"    until ${1:SalesLine}.Next() = 0;"
+			"    until ${2:SalesLine}.Next() = 0;"
 		],		
 		"description": "al Repeat-Until with document lines. filtering previously"
 	}
