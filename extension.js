@@ -15,21 +15,19 @@ function activate(context) {
 		//changeSelection2();
 		const rename = require('./src/RenameVars.js');
 		rename.changeSelection();
-	});	
-	context.subscriptions.push(disposableSelection);	
+	});
+	context.subscriptions.push(disposableSelection);
 
 	let disposableAll = vscode.commands.registerCommand('JALVarNaming.AlVarNameAll', function () {
 		//Test v1:Record  "S H";
 		vscode.window.showInputBox({
 			placeHolder: "Are you sure to rename all variables of documents (Y/N)?"
-		  }).then(value=>
-			{
-				if (value.match(/Y/i))
-				{
-					const rename = require('./src/RenameVars.js');					
-					rename.changeAll();
-				}
-			});		
+		}).then(value => {
+			if (value.match(/Y/i)) {
+				const rename = require('./src/RenameVars.js');
+				rename.changeAll();
+			}
+		});
 	});
 	context.subscriptions.push(disposableAll);
 
@@ -39,8 +37,8 @@ function activate(context) {
 		//changeSelection2();
 		const rename = require('./src/RenameVars.js');
 		rename.CatchDocumentChanges();
-	});	
-	context.subscriptions.push(disposableCatchDocumentChanges);	
+	});
+	context.subscriptions.push(disposableCatchDocumentChanges);
 
 	let disposableCatchDocumentChangesSnp = vscode.commands.registerCommand('JALVarNaming.CatchDocumentChangesSnp', function () {
 		// The code you place here will be executed every time your command is executed
@@ -48,8 +46,8 @@ function activate(context) {
 		//changeSelection2();
 		const rename = require('./src/RenameVars.js');
 		rename.CatchDocumentChangesSnp();
-	});	
-	context.subscriptions.push(disposableCatchDocumentChangesSnp);	
+	});
+	context.subscriptions.push(disposableCatchDocumentChangesSnp);
 
 	let disposableStopCatchDocumentChanges = vscode.commands.registerCommand('JALVarNaming.StopCatchDocumentChanges', function () {
 		// The code you place here will be executed every time your command is executed
@@ -57,26 +55,28 @@ function activate(context) {
 		//changeSelection2();
 		const rename = require('./src/RenameVars.js');
 		rename.StopCatchDocumentChanges();
-	});	
-	context.subscriptions.push(disposableStopCatchDocumentChanges);		
+	});
+	context.subscriptions.push(disposableStopCatchDocumentChanges);
 
-	context.subscriptions.push(vscode.languages.registerCompletionItemProvider (
+	context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
 		{ language: 'al', scheme: 'file' },
-		
-		{
-		  // eslint-disable-next-line no-unused-vars
- provideCompletionItems(document, position) {
-	const rename = require('./src/RenameVars.js');
-	return rename.SnippetVariableAL();
 
-  }		},
-  'talVarNaming' // trigger
-	  ));}
+		{
+			// eslint-disable-next-line no-unused-vars
+			provideCompletionItems(document, position) {
+				const rename = require('./src/RenameVars.js');
+				return rename.SnippetVariableAL();
+
+			}
+		},
+		'talVarNaming' // trigger
+	));
+}
 // @ts-ignore
 exports.activate = activate;
 
 // this method is called when your extension is deactivated
-function deactivate() {}
+function deactivate() { }
 
 module.exports = {
 	// @ts-ignore
