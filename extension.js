@@ -80,7 +80,7 @@ function activate(context) {
 				return includeParametrs.SnippetProcedureParameters();
 			}
 		},
-		'talIncludeParameters' // trigger
+		'tIncludeParameters' // trigger
 	));
 
 }

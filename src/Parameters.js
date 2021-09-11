@@ -8,7 +8,7 @@ module.exports = {
 }
 async function SnippetProcedureParameters()
 {
-	const commandName = 'talIncludeParameters';
+	const commandName = 'tIncludeParameters';
 	const commandCompletion = new vscode.CompletionItem(commandName);
 	commandCompletion.kind = vscode.CompletionItemKind.Snippet;
     commandCompletion.filterText = commandName;
@@ -25,17 +25,32 @@ async function GetProcedureParameters()
 	let ProcedureStartColumn = GetProcedureStartColumn(document.lineAt(ProcedureLine).text);
 	if (ProcedureStartColumn < 0)
 	{
-		WriteOutputPannel('No procedure in the line or lack of "(" open. Action cancelled.');
-		return;
+		WriteOutputPannel('No procedure in the line or lack or "(" open. Action cancelled.');
+		return '';
 	}
+
     let locations = await vscode.commands.executeCommand('vscode.executeDefinitionProvider',
-    document.uri,vscode.window.activeTextEditor.selection.start);
-    return '';
+    document.uri,new vscode.Position(ProcedureLine,ProcedureStartColumn));
+	if (!locations)
+	{
+		WriteOutputPannel('Cannot get the definition of the method.');
+		return '';
+	}
+	const definitionDoc = await vscode.workspace.openTextDocument(locations[0].uri);        
+	let paramsOrig =definitionDoc.lineAt(locations[0].range.start.line).text;
+	let OpenParanthesisPos = paramsOrig.search(/\(/g);
+	if (OpenParanthesisPos == 0)
+	{
+		WriteOutputPannel('Paramters in definition not found.');
+	}
+	paramsOrig = paramsOrig.substring(OpenParanthesisPos+1);
+	return paramsOrig.replace(/(.+?)(:.+?[;|\)])/gmi,'$1,').slice(0,-1);    
+//    procedure SetSourceFilter(SourceType: Integer; SourceSubtype: Integer; SourceID: Code[20]; SourceRefNo: Integer; SourceKey: Boolean)
 }
 function GetProcedureStartColumn(LineText= '') 
 {
 
-	const regexpProcedureName = /[^\s]+\(/;
+	const regexpProcedureName = /[^\s|\.]+\(/;
 	return LineText.search(regexpProcedureName);		
 }
 function WriteOutputPannel(MessageContent='') 
