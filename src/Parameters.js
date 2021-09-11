@@ -1,28 +1,44 @@
 const vscode = require('vscode');
 module.exports = {
-	SnippetProcedureParameters: function(document, position)
+	SnippetProcedureParameters: function()
 	{
-		return(SnippetProcedureParameters(document, position));
+		return(SnippetProcedureParameters());
 	}
 
 }
-async function SnippetProcedureParameters(document, position)
+async function SnippetProcedureParameters()
 {
-	const commandName = 'tProcParameters';
+	const commandName = 'talIncludeParameters';
 	const commandCompletion = new vscode.CompletionItem(commandName);
 	commandCompletion.kind = vscode.CompletionItemKind.Snippet;
     commandCompletion.filterText = commandName;
     commandCompletion.label = commandName;	
-	commandCompletion.insertText = await GetProcedureParameters(document, position);
-	commandCompletion.detail = 'Write type and subtype of the variable and when write semicolon will be renamed';
-	commandCompletion.documentation = 'Write type and subtype of the variable and when write semicolon will be renamed'; 
+	commandCompletion.insertText = await GetProcedureParameters();
+	commandCompletion.detail = 'Write paramaters from procedure definition';
+	commandCompletion.documentation = 'Type snippet after procedure call and open "(" and it will take all parameters from procedure definition'; 
 	return [commandCompletion];
 }
-async function GetProcedureParameters(document, position)
+async function GetProcedureParameters()
 {
-    let CurrentLineText = document.lineAt(position.start.line).text;
-    return CurrentLineText;
+	let document = await vscode.window.activeTextEditor.document;	
+	let ProcedureLine = vscode.window.activeTextEditor.selection.start.line;
+	let ProcedureStartColumn = GetProcedureStartColumn(document.lineAt(ProcedureLine).text);
+	if (ProcedureStartColumn < 0)
+	{
+		WriteOutputPannel('No procedure in the line or lack of "(" open. Action cancelled.');
+		return;
+	}
     let locations = await vscode.commands.executeCommand('vscode.executeDefinitionProvider',
     document.uri,vscode.window.activeTextEditor.selection.start);
     return '';
+}
+function GetProcedureStartColumn(LineText= '') 
+{
+
+	const regexpProcedureName = /[^\s]+\(/;
+	return LineText.search(regexpProcedureName);		
+}
+function WriteOutputPannel(MessageContent='') 
+{
+	
 }

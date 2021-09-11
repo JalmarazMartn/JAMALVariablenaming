@@ -66,11 +66,23 @@ function activate(context) {
 			provideCompletionItems(document, position) {
 				const rename = require('./src/RenameVars.js');
 				return rename.SnippetVariableAL();
-
 			}
 		},
 		'talVarNaming' // trigger
 	));
+	context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
+		{ language: 'al', scheme: 'file' },
+
+		{
+			// eslint-disable-next-line no-unused-vars
+			provideCompletionItems(document, position) {
+				const includeParametrs = require('./src/Parameters.js');
+				return includeParametrs.SnippetProcedureParameters();
+			}
+		},
+		'talIncludeParameters' // trigger
+	));
+
 }
 // @ts-ignore
 exports.activate = activate;
