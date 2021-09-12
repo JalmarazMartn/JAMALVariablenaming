@@ -37,15 +37,26 @@ async function GetProcedureParameters()
 		return '';
 	}
 	const definitionDoc = await vscode.workspace.openTextDocument(locations[0].uri);        
-	let paramsOrig =definitionDoc.lineAt(locations[0].range.start.line).text;
-	let OpenParanthesisPos = paramsOrig.search(/\(/g);
-	if (OpenParanthesisPos == 0)
-	{
-		WriteOutputPannel('Paramters in definition not found.');
+	let paramsOrig ='';
+	for (let index = locations[0].range.start.line; index <= locations[0].range.end.line; index++) {
+		paramsOrig = paramsOrig + definitionDoc.lineAt(index).text;
 	}
-	paramsOrig = paramsOrig.substring(OpenParanthesisPos+1);
-	return paramsOrig.replace(/(.+?)(:.+?[;|\)])/gmi,'$1,').slice(0,-1);    
+	const regexpOnlyParamsAndClose = /procedure.+?\((.+\)).*/gmi;
+	if (paramsOrig.search(regexpOnlyParamsAndClose) < 0)
+	{
+		WriteOutputPannel('Parameters in definition not found.');
+		return '';
+	}
+
+	paramsOrig = paramsOrig.replace(regexpOnlyParamsAndClose,'$1');
+	return paramsOrig.replace(/(.+?)(:.+?[;|\)])/gmi,GetOnlyParam).slice(0,-1);    
 //    procedure SetSourceFilter(SourceType: Integer; SourceSubtype: Integer; SourceID: Code[20]; SourceRefNo: Integer; SourceKey: Boolean)
+}
+function GetOnlyParam(fullMatch,declarationOnly)
+{
+	console.log(fullMatch);
+	console.log(declarationOnly.replace(/\s*[var]*\s*(.*)/gmi,'$1'));
+	return declarationOnly.replace(/\s*[var]*\s*(.*)/gmi,'$1')+',';
 }
 function GetProcedureStartColumn(LineText= '') 
 {
