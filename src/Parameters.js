@@ -25,7 +25,7 @@ async function GetProcedureParameters()
 	let ProcedureStartColumn = GetProcedureStartColumn(document.lineAt(ProcedureLine).text);
 	if (ProcedureStartColumn < 0)
 	{
-		WriteOutputPannel('No procedure in the line or lack or "(" open. Action cancelled.');
+		ShowErrorMessage('No procedure in the line or lack of "(" open. Action cancelled.');
 		return '';
 	}
 
@@ -33,7 +33,7 @@ async function GetProcedureParameters()
     document.uri,new vscode.Position(ProcedureLine,ProcedureStartColumn));
 	if (!locations)
 	{
-		WriteOutputPannel('Cannot get the definition of the method.');
+		ShowErrorMessage('Cannot get the definition of the method.');
 		return '';
 	}
 	const definitionDoc = await vscode.workspace.openTextDocument(locations[0].uri);        
@@ -44,7 +44,7 @@ async function GetProcedureParameters()
 	const regexpOnlyParamsAndClose = /procedure.+?\((.+\)).*/gmi;
 	if (paramsOrig.search(regexpOnlyParamsAndClose) < 0)
 	{
-		WriteOutputPannel('Parameters in definition not found.');
+		ShowErrorMessage('Parameters in definition not found.');
 		return '';
 	}
 
@@ -64,7 +64,7 @@ function GetProcedureStartColumn(LineText= '')
 	const regexpProcedureName = /[^\s|\.]+\(/;
 	return LineText.search(regexpProcedureName);		
 }
-function WriteOutputPannel(MessageContent='') 
+function ShowErrorMessage(MessageContent='') 
 {
-	
+	vscode.window.showErrorMessage(MessageContent);
 }

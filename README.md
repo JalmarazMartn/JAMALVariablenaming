@@ -41,6 +41,13 @@ This command renames the variables in editor selection. Notice that this command
 
 ![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/SelRename.gif?raw=true)
 
+### Snippet Include Parameters
+
+Typing "tincludeParameters" snippet after open parenthesis in procedure name, you get all procedure parameters:
+
+![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/tincludeParameters.gif?raw=true)
+
+
 ### Snippet label.
 
 Last contribution is the snippet label, to declare labels in al code. Typing "tlabel" snippet is triggered:
@@ -109,3 +116,7 @@ Improvement in label variable snippet suggested by Krzysztof Bialowas. Add comme
 ### 0.0.10
 
 Improve repeat document lines snippets
+
+### 0.0.11
+
+New snippet tincludeParameters to get the parameters of a function
