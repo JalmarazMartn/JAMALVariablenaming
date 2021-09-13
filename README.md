@@ -124,3 +124,11 @@ New snippet tincludeParameters to get the parameters of a function
 ### 0.0.12
 
 Fixed error in snippet tincludeParameters
+
+### 0.0.13
+
+Skiped due bad luck number
+
+### 0.0.14
+
+Fixed another error in snippet tincludeParameters
