@@ -120,3 +120,7 @@ Improve repeat document lines snippets
 ### 0.0.11
 
 New snippet tincludeParameters to get the parameters of a function
+
+### 0.0.12
+
+Fixed error in snippet tincludeParameters
