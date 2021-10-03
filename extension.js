@@ -82,6 +82,18 @@ function activate(context) {
 		},
 		'tIncludeParameters' // trigger
 	));
+	context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
+		{ language: 'al', scheme: 'file' },
+
+		{
+			// eslint-disable-next-line no-unused-vars
+			provideCompletionItems(document, position) {
+				const RecordKeys = require('./src/RecordKeys.js');
+				return RecordKeys.SnippetRecordKeys();
+			}
+		},
+		'tGetKeys' // trigger
+	));
 
 }
 // @ts-ignore
