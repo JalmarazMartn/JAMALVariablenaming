@@ -47,6 +47,12 @@ Typing "tincludeParameters" snippet after open parenthesis in procedure name, yo
 
 ![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/tincludeParameters.gif?raw=true)
 
+### Snippet get keys
+
+Typing "tGetKeys" snippet after "Setcurrentkey(" statement you get a multi-selection of all table keys:
+
+![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/tGetKeys.gif?raw=true)
+
 
 ### Snippet label.
 
@@ -132,3 +138,7 @@ Skiped due bad luck number
 ### 0.0.14
 
 Fixed another error in snippet tincludeParameters
+
+### 0.0.15
+
+New snippet tGetKeys bring table keys so select after setcurrentkey( declaraction
