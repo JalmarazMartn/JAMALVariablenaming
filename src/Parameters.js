@@ -67,7 +67,3 @@ function GetProcedureStartColumn(LineText= '')
 	const regexpProcedureName = /[^\s|\.]+\(/;
 	return LineText.search(regexpProcedureName);		
 }
-function ShowErrorMessage(MessageContent='') 
-{
-	vscode.window.showErrorMessage(MessageContent);
-}

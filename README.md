@@ -41,6 +41,22 @@ This command renames the variables in editor selection. Notice that this command
 
 ![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/SelRename.gif?raw=true)
 
+## Fix Tx2AL issues
+
+New command "JAM Fix Txt2AL issues" to fix Tx2AL issues. Steps:
+1. With F1 execute "JAM Fix Txt2AL issues".
+2. Confirm the pop up message with yes.
+3. Automatically fix the Tx2AL issues: set application area with basic and suite and remove scope internal statements.
+4. Save all changed files with File->Save All.
+
+## Avoid implicit REC in page fields
+
+New command "JAM Fix Implicit REC in page fields" to avoid implicit REC in page fields. Steps:
+1. With F1 execute "JAM Fix Implicit REC in page fields".
+2. Confirm the pop up message with yes.
+3. Automatically put .rec in page fields declaration.
+4. Save all changed files with File->Save All.
+
 ### Snippet Include Parameters
 
 Typing "tincludeParameters" snippet after open parenthesis in procedure name, you get all procedure parameters:
@@ -142,3 +158,8 @@ Fixed another error in snippet tincludeParameters
 ### 0.0.15
 
 New snippet tGetKeys bring table keys so select after setcurrentkey( declaraction
+
+### 0.0.16
+
+Add new command "JAM Fix Implicit REC in page fields" to fix the implicit REC in page fields, adding the explicit REC in page fields.
+Exclude implicit REC in page fields in Fix Txt2AL command.

@@ -95,6 +95,18 @@ function activate(context) {
 		'tGetKeys' // trigger
 	));
 
+	let FixTxt2ALIssues = vscode.commands.registerCommand('JALVarNaming.FixTxt2ALIssues', function () {
+		const AddApplicationArea = require('./src/AddApplicationArea.js');		
+		AddApplicationArea.changeInWorkspace();
+	});
+	context.subscriptions.push(FixTxt2ALIssues);
+
+	let FixImplicitREC = vscode.commands.registerCommand('JALVarNaming.FixImplicitREC', function () {
+		const AddApplicationArea = require('./src/AvoidImplicitREC.js');		
+		AddApplicationArea.FieldDeclarationAllWorkspace();
+	});
+	context.subscriptions.push(FixImplicitREC);
+
 }
 // @ts-ignore
 exports.activate = activate;

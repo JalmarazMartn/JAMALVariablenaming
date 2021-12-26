@@ -3,7 +3,7 @@
 	"displayName": "JAL Variable Naming",
 	"description": "Ease AL Naming following BC rules",
 	"publisher": "JessAlmarazMartin",
-	"version": "0.0.15",
+	"version": "0.0.16",
 	"repository": "https://github.com/JalmarazMartn/JAMALVariablenaming",	
 	"icon": "images/Tipsa.png",
 	"engines": {
@@ -21,6 +21,8 @@
 		"onCommand:JALVarNaming.CatchDocumentChanges",
 		"onCommand:JALVarNaming.CatchDocumentChangesSnp",		
 		"onCommand:JALVarNaming.StopCatchDocumentChanges",
+		"onCommand:JALVarNaming.FixTxt2ALIssues",
+		"onCommand:JALVarNaming.FixImplicitREC",
 		"onStartupFinished"
 	],
 	"main": "./extension.js",
@@ -62,7 +64,19 @@
 			{
 				"command": "JALVarNaming.StopCatchDocumentChanges",
 				"title": "JAL Var Stop AL variable editing mode"
-			}			
+			},
+			{
+				"command": "JALVarNaming.CatchDocumentChangesSnp",
+				"title": "JAL Var Begin AL variable editing mode (Snippet)"
+			},
+			{
+				"command": "JALVarNaming.FixTxt2ALIssues",				 
+				"title": "JAM Fix Txt2AL issues App Area, Scope"
+			},
+			{
+				"command": "JALVarNaming.FixImplicitREC",				 
+				"title": "JAM Fix Implicit REC in page fields"
+			}						
 		],
 		"snippets": [
 			{			  
