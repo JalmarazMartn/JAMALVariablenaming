@@ -70,10 +70,20 @@ Typing "tGetKeys" snippet after "Setcurrentkey(" statement you get a multi-selec
 ![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/tGetKeys.gif?raw=true)
 
 
-### Snippet label.
+### Snippet label
 
 Last contribution is the snippet label, to declare labels in al code. Typing "tlabel" snippet is triggered:
 ![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/tlabel.gif?raw=true)
+
+### Snippet trepeatDocLines
+
+It is very usual to iterate into document lines: we make over and over the code to iterate sales lines form a sales header. This snippet is to declare a repeat document loop: first you type snippet trepeatDocLines, and then you can select the document you want to iterate, transfer, sales shipment, purchase receipt and only with two these two steps you will get all the lines looping:
+
+![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/tRepeatDocs.gif?raw=true)
+
+Other standard Business Central documents have a Document Type field. Sales Line, Purchase Line, Assembly Line. To iterate into these documents you can use the snippet trepeatDocLinesWithDocumentType.
+
+The other related snippet es tRepeatWhseDocs (warehouse activity, warehouse receipt, warehouse shipment, pick).
 
 ## Requirements
 
