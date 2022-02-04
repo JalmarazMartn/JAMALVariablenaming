@@ -173,3 +173,7 @@ New snippet tGetKeys bring table keys so select after setcurrentkey( declaractio
 
 Add new command "JAM Fix Implicit REC in page fields" to fix the implicit REC in page fields, adding the explicit REC in page fields.
 Exclude implicit REC in page fields in Fix Txt2AL command.
+
+### 0.0.17
+
+TrepeatDocs snippet documentation.
