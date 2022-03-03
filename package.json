@@ -3,9 +3,9 @@
 	"displayName": "JAL Variable Naming",
 	"description": "Ease AL Naming following BC rules",
 	"publisher": "JessAlmarazMartin",
-	"version": "0.0.17",
+	"version": "0.0.18",
 	"repository": "https://github.com/JalmarazMartn/JAMALVariablenaming",	
-	"icon": "images/Tipsa.png",
+	"icon": "images/Programming-Variable-icon.png",
 	"engines": {
 		"vscode": "^1.46.0"
 	},

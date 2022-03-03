@@ -177,3 +177,7 @@ Exclude implicit REC in page fields in Fix Txt2AL command.
 ### 0.0.17
 
 TrepeatDocs snippet documentation.
+
+### 0.0.18
+
+Use image free common form https://icons.iconarchive.com/icons/icons8/ios7/512/Programming-Variable-icon.png
