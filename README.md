@@ -181,3 +181,7 @@ TrepeatDocs snippet documentation.
 ### 0.0.18
 
 Use image free common form https://icons.iconarchive.com/icons/icons8/ios7/512/Programming-Variable-icon.png
+
+### 0.0.19
+
+New snippet tactionJAL with promoted options and image.

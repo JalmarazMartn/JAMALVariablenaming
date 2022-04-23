@@ -43,5 +43,25 @@
 			"    until ${2:SalesLine}.Next() = 0;"
 		],		
 		"description": "al Repeat-Until with warehouse document lines. filtering previously"
-	}	
+	},
+    "Snippet: Action": {
+        "prefix": "tactionJAL",
+        "body": [
+            "action(${1:ActionName})",
+            "{",
+            "\tApplicationArea = ${2|All,Basic,Suite,Advanced|};",
+			"\tCaption = '${1:ActionName}';",
+			"\tImage=$3;",
+			"\tPromoted=true;",			
+			"\tPromotedIsBig=true;",
+			"\tPromotedCategory=$4;",
+            "\t",
+            "\ttrigger OnAction()",
+            "\tbegin",
+            "\t\t$0",
+            "\tend;",
+            "}"
+        ],
+        "description": "Snippet: Page Action JAL version"
+    }		
 }
