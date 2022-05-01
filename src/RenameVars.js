@@ -1,5 +1,7 @@
 const vscode = require('vscode');
 const TextWritevar = 'WriteTypeAndSubtype: ';
+//const multiSelectObjType = '${1|Record,Codeunit|}';//$2';
+const multiSelectObjType = '';
 let SnippetTrigered = false;
 var subscriptionOnDidChange = vscode.workspace.onDidChangeTextDocument(HandleDocumentChanges);
 var subscriptionOnDidChangeSnp = vscode.workspace.onDidChangeTextDocument(HandleDocumentChanges);
@@ -42,8 +44,14 @@ module.exports = {
 		StopCatchDocumentChanges();
 	},
 	SnippetVariableAL: function()
-	{
-		return(SnippetVariableAL());
+	{		
+		const commandName = 'talVarNaming';				
+		const insertText = new vscode.SnippetString(TextWritevar + multiSelectObjType);
+
+		const detail = 'Write type and subtype of the variable and when write semicolon will be renamed';
+		const documentation = 'Write type and subtype of the variable and when write semicolon will be renamed'; 	
+		//return(SnippetVariableAL());
+		return(SnippetVariableALArg(commandName,detail,insertText,documentation));		
 	}
 }
 async function lineProcess(i, CurrDoc) {
@@ -53,6 +61,7 @@ async function lineProcess(i, CurrDoc) {
 async function ALVariableNaming(lineNumber = 0, original) {
 	var varDecMatches = original.match(GetRegExpVarDeclaration(true));
 	if (!varDecMatches) { return };
+	//subscriptionOnDidChange.dispose();//new
 	for (var i = 0; i < Object.keys(varDecMatches).length; i++) {
 		var element = varDecMatches[i];
 		original = await MatchProcess(element, original, lineNumber);
@@ -229,7 +238,7 @@ function IsALVarDeclarationLine(PrevLineText='')
 	const IsDecLine = (PrevLineText.search(GetRegExpVarDeclaration(false)) >= 0)
 	return (IsVarLine || IsDecLine);
 }
-function SnippetVariableAL()
+/* function SnippetVariableAL()
 {
 	const commandName = 'talVarNaming';
 	const commandCompletion = new vscode.CompletionItem(commandName);
@@ -240,6 +249,20 @@ function SnippetVariableAL()
 	commandCompletion.command = { command: 'JALVarNaming.CatchDocumentChangesSnp', title: 'Begin variable declaration' };
 	commandCompletion.detail = 'Write type and subtype of the variable and when write semicolon will be renamed';
 	commandCompletion.documentation = 'Write type and subtype of the variable and when write semicolon will be renamed'; 
+	SnippetTrigered = true;
+	return [commandCompletion];
+}
+ */
+function SnippetVariableALArg(commandName,detail,insertText,documentation)
+{
+	const commandCompletion = new vscode.CompletionItem(commandName);
+	commandCompletion.kind = vscode.CompletionItemKind.Variable;
+	commandCompletion.filterText = commandName;
+	commandCompletion.label = commandName;	
+	commandCompletion.insertText = insertText;
+	commandCompletion.command = { command: 'JALVarNaming.CatchDocumentChangesSnp', title: 'Begin variable declaration' };
+	commandCompletion.detail = detail;
+	commandCompletion.documentation = documentation; 
 	SnippetTrigered = true;
 	return [commandCompletion];
 }
