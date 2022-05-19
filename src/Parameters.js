@@ -33,28 +33,36 @@ async function GetProcedureParameters()
 		//ShowErrorMessage('No procedure in the line or lack of "(" open. Action cancelled.');
 		return '';
 	}
-
-    let locations = await vscode.commands.executeCommand('vscode.executeDefinitionProvider',
+	
+	let siganturaFunction = await vscode.commands.executeCommand('vscode.executeHoverProvider',document.uri, new vscode.Position(ProcedureLine,ProcedureStartColumn+1));	
+	if (!siganturaFunction)
+	{
+		//ShowErrorMessage('No procedure in the line or lack of "(" open. Action cancelled.');
+		return '';
+	}
+	let AllDefinition = siganturaFunction[0].contents[0].value;	
+/*     let locations = await vscode.commands.executeCommand('vscode.executeDefinitionProvider',	
     document.uri,new vscode.Position(ProcedureLine,ProcedureStartColumn));
 	if (!locations)
-	{
-	//	ShowErrorMessage('Cannot get the definition of the method.');
+	{	
 		return '';
 	}
 	const definitionDoc = await vscode.workspace.openTextDocument(locations[0].uri);        
 	let AllDefinition ='';
 	for (let index = locations[0].range.start.line; index <= locations[0].range.end.line; index++) {
 		AllDefinition = AllDefinition + definitionDoc.lineAt(index).text;
-	}
+	}*/
 	const regexpOnlyParamsAndClose = /(local)*\s*procedure.+?\((.+\)).*/gmi;
 	if (AllDefinition.search(regexpOnlyParamsAndClose) < 0)
 	{
 	//	ShowErrorMessage('Parameters in definition not found.');
 		return '';
 	}
-
+	//get first group in matching of alldefinition
+	AllDefinition =  AllDefinition.match(regexpOnlyParamsAndClose)[0];	
 	const OnlyParams = AllDefinition.replace(regexpOnlyParamsAndClose,'$2');
-	return OnlyParams.replace(/(.+?)(:.+?[;|\)])/gmi,GetOnlyParam).slice(0,-1);    
+	//return OnlyParams.replace(/(.+?)(:.+?[;|\)])/gmi,GetOnlyParam).slice(0,-1);    
+	return OnlyParams.replace(/(.+?)(:.+?[,|\)])/gmi,GetOnlyParam).slice(0,-1);    
 //    procedure SetSourceFilter(SourceType: Integer; SourceSubtype: Integer; SourceID: Code[20]; SourceRefNo: Integer; SourceKey: Boolean)
 }
 function GetOnlyParam(fullMatch,declarationOnly)

@@ -40,7 +40,7 @@ async function GetSnippetTextWithKeys()
 
 	const definitionDoc = await vscode.workspace.openTextDocument(finallocations[0].uri);        	
 	let AllDefinition =definitionDoc.getText();
-	const regexpRecordKeys = /key\(.+;.+\)/gmi;
+	const regexpRecordKeys = /key\s*\(.+;.+\)/gmi;
 	var varDecMatches = AllDefinition.match(regexpRecordKeys);
 	if (!varDecMatches) 
 	{

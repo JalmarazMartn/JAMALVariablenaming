@@ -185,3 +185,11 @@ Use image free common form https://icons.iconarchive.com/icons/icons8/ios7/512/P
 ### 0.0.19
 
 New snippet tactionJAL with promoted options and image.
+
+### 0.0.20
+
+Fixing an error in snippet tgetkeys
+
+### 0.0.21
+
+Fixing an error in snippet tincludeParameters
