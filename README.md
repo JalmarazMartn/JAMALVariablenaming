@@ -198,3 +198,7 @@ Fixing an error in snippet tincludeParameters
 
 Remove unnecessary visibility of "JAL Var Begin AL variable editing mode (Snippet)" command.
 Make no sense to use this command in Zen mode, only in internal use and API for third party.
+
+#### 0.0.23
+
+Fixing an error in snippet tgetkeys

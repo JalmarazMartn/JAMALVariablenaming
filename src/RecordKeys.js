@@ -48,14 +48,14 @@ async function GetSnippetTextWithKeys()
 	}
 	let KeysFound = '';
 	for (var i = 0; i < Object.keys(varDecMatches).length; i++) {
-		var KeyElement = varDecMatches[i];
+		var KeyElement = varDecMatches[i];		
 		if (KeysFound !== '')
 		{
 			KeysFound = KeysFound + ',';
 		}
-		KeysFound = KeysFound + convertKeyElementToSnippetText(KeyElement);
-	}	
-	KeysFound = '${1|' + KeysFound + '|}';
+		KeysFound = KeysFound + convertKeyElementToSnippetText(KeyElement);		
+	}		
+	KeysFound = '${1|' + KeysFound + '|}';	
 	return KeysFound;
 }
 function GetRecordStartColumn(LineText= '') 
@@ -66,7 +66,9 @@ function GetRecordStartColumn(LineText= '')
 }
 function convertKeyElementToSnippetText(KeyElement='')
 {
+	KeyElement = KeyElement.replace(/;\s*/gmi, ';');
 	const KeyStart = KeyElement.search(';') + 1;
+
 	let ConvertedKey = KeyElement.substring(KeyStart);
 	// @ts-ignore
 	ConvertedKey = ConvertedKey.replaceAll('"','\"');
