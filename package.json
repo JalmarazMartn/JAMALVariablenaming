@@ -3,7 +3,7 @@
 	"displayName": "JAL Variable Naming",
 	"description": "Ease AL Naming following BC rules",
 	"publisher": "JessAlmarazMartin",
-	"version": "0.0.23",
+	"version": "0.0.24",
 	"repository": "https://github.com/JalmarazMartn/JAMALVariablenaming",	
 	"icon": "images/Programming-Variable-icon.png",
 	"engines": {
@@ -23,6 +23,7 @@
 		"onCommand:JALVarNaming.StopCatchDocumentChanges",
 		"onCommand:JALVarNaming.FixTxt2ALIssues",
 		"onCommand:JALVarNaming.FixImplicitREC",
+		"onCommand:JALVarNaming.ReplaceSnippetNameByParameters",
 		"onStartupFinished"
 	],
 	"main": "./extension.js",

@@ -4,6 +4,10 @@ module.exports = {
 	SnippetProcedureParameters: function()
 	{
 		return(SnippetProcedureParameters());
+	},
+	ReplaceSnippetNameByParameters: function()
+	{
+		ReplaceSnippetNameByParameters();
 	}
 
 }
@@ -13,10 +17,27 @@ async function SnippetProcedureParameters()
 	commandCompletion.kind = vscode.CompletionItemKind.Snippet;
     commandCompletion.filterText = commandName;
     commandCompletion.label = commandName;	
-	commandCompletion.insertText = await GetProcedureParameters();
+	//commandCompletion.insertText = await GetProcedureParameters();
+	commandCompletion.command = {
+		title: 'Insert procedure parameters',
+		command: 'JALVarNaming.ReplaceSnippetNameByParameters'};
 	commandCompletion.detail = 'Write paramaters from procedure definition';
 	commandCompletion.documentation = 'Type snippet after procedure call and open "(" and it will take all parameters from procedure definition'; 
 	return [commandCompletion];
+}
+async function ReplaceSnippetNameByParameters()
+{			
+	const edit = new vscode.WorkspaceEdit();
+	const LineText = vscode.window.activeTextEditor.document.lineAt(vscode.window.activeTextEditor.selection.start.line).text;
+	if (LineText.search(commandName) < 0)
+	{
+		return;
+	}
+	const ProcedureParameters = await GetProcedureParameters();
+	const LineTextReplaced = LineText.replace(commandName,ProcedureParameters);
+	
+	edit.replace(vscode.window.activeTextEditor.document.uri, new vscode.Range(new vscode.Position(vscode.window.activeTextEditor.selection.start.line,0),new vscode.Position(vscode.window.activeTextEditor.selection.start.line,LineText.length)),LineTextReplaced);
+	await vscode.workspace.applyEdit(edit);
 }
 async function GetProcedureParameters()
 {

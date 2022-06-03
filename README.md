@@ -202,3 +202,7 @@ Make no sense to use this command in Zen mode, only in internal use and API for 
 #### 0.0.23
 
 Fixing an error in snippet tgetkeys
+
+#### 0.0.24
+
+Increase code speed of completion item tincludeParameters, to avoid unnecessary search of parameters.

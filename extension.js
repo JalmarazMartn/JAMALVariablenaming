@@ -32,13 +32,16 @@ function activate(context) {
 	context.subscriptions.push(disposableAll);
 
 	let disposableCatchDocumentChanges = vscode.commands.registerCommand('JALVarNaming.CatchDocumentChanges', function () {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		//changeSelection2();
 		const rename = require('./src/RenameVars.js');
 		rename.CatchDocumentChanges();
 	});
 	context.subscriptions.push(disposableCatchDocumentChanges);
+
+	let disposableRelaceSnippetNameByParameters = vscode.commands.registerCommand('JALVarNaming.ReplaceSnippetNameByParameters', function () {
+		const Parameters = require('./src/Parameters.js');
+		Parameters.ReplaceSnippetNameByParameters();
+	});
+	context.subscriptions.push(disposableRelaceSnippetNameByParameters);
 
 	let disposableCatchDocumentChangesSnp = vscode.commands.registerCommand('JALVarNaming.CatchDocumentChangesSnp', function () {
 		// The code you place here will be executed every time your command is executed
