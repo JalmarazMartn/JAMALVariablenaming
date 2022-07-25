@@ -146,7 +146,7 @@ function GetAppPrefix()
     {
         vscode.window.showErrorMessage("You must specify a value for AppPrefix in extension settings");
     }
-    return(AppPrefix);    
+    return(new RegExp(AppPrefix));    
 }
 async function HandleDocumentChanges(event)
 {

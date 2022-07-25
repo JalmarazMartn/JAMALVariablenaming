@@ -95,7 +95,7 @@ This extension contributes the following settings:
 
 * `CharsFrom` `CharsTo`: Future feature to transform local language chars.
 * `ExcludePrefixInRename`: Set true (default false) to exclude your prefix from renaming.
-* `AppPrefix`: Set here your App prefix to exclude it in renaming (see previous setting).
+* `AppPrefix`: Set here your App prefix to exclude it in renaming (see previous setting). You can set here a regular expression too. Example: `AppPrefix: "TIP[\d]*"`
 
 ## Known Issues
 
@@ -206,3 +206,7 @@ Fixing an error in snippet tgetkeys
 #### 0.0.24
 
 Increase code speed of completion item tincludeParameters, to avoid unnecessary search of parameters.
+
+#### 0.0.25
+
+Prefix to exclude could be set with and regular expression.
