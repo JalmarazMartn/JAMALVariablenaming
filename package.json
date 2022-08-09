@@ -3,7 +3,7 @@
 	"displayName": "JAL Variable Naming",
 	"description": "Ease AL Naming following BC rules",
 	"publisher": "JessAlmarazMartin",
-	"version": "0.0.25",
+	"version": "0.0.26",
 	"repository": "https://github.com/JalmarazMartn/JAMALVariablenaming",	
 	"icon": "images/Programming-Variable-icon.png",
 	"engines": {
@@ -18,6 +18,7 @@
 	],
 	"activationEvents": [
 		"onCommand:JALVarNaming.AlVarNameSel",
+		"onCommand:JALVarNaming.setUsageCategory",
 		"onCommand:JALVarNaming.CatchDocumentChanges",
 		"onCommand:JALVarNaming.CatchDocumentChangesSnp",		
 		"onCommand:JALVarNaming.StopCatchDocumentChanges",
@@ -73,7 +74,11 @@
 			{
 				"command": "JALVarNaming.FixImplicitREC",				 
 				"title": "JAM Fix Implicit REC in page fields"
-			}						
+			},
+			{
+				"command": "JALVarNaming.setUsageCategory",
+				"title": "JAL Set usage category from an old txt menu file"
+			}
 		],
 		"snippets": [
 			{			  

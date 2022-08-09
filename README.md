@@ -41,6 +41,15 @@ This command renames the variables in editor selection. Notice that this command
 
 ![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/SelRename.gif?raw=true)
 
+## JAL Set usage category from an old txt menu file
+
+With this command you can set the usage category for Pages and reports from an old txt menu file. Previously you have to export from C/SIDE a txt objext with all the menus. Then, you can follow these steps:
+
+* Execute command "JAL Set usage category from an old txt menu file".
+* Select with a dialog the txt file with the C/SIDE menus.
+* And then the commnad will set automatically the usage category for all the objects in the workspace reading them from menu file.
+* Go to File > Save all.
+
 ## Fix Tx2AL issues
 
 New command "JAM Fix Txt2AL issues" to fix Tx2AL issues. Steps:
@@ -210,3 +219,7 @@ Increase code speed of completion item tincludeParameters, to avoid unnecessary 
 #### 0.0.25
 
 Prefix to exclude could be set with and regular expression.
+
+#### 0.0.26
+
+New command "JAL Set usage category from an old txt menu file".

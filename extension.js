@@ -17,6 +17,12 @@ function activate(context) {
 		rename.changeSelection();
 	});
 	context.subscriptions.push(disposableSelection);
+	let setUsageCategory = vscode.commands.registerCommand('JALVarNaming.setUsageCategory', function () {
+		const setUsageCategory = require('./src/setUsageCatagory');		
+		setUsageCategory.setUsageCategory();
+	}
+	);
+	context.subscriptions.push(setUsageCategory);
 
 	let disposableAll = vscode.commands.registerCommand('JALVarNaming.AlVarNameAll', function () {
 		//Test v1:Record  "S H";

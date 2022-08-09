@@ -1,0 +1,13 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Copy renum library",
+            "type": "shell",
+            "command": "copy 'C:/Users/Jesus/Documents/Proyecto js/ALRenumbering/src/Library.js' 'C:/Users/Jesus/JAMVariableNaming/src/Renumber/Library.js'",
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
