@@ -43,11 +43,11 @@ This command renames the variables in editor selection. Notice that this command
 
 ## JAL Set usage category from an old txt menu file
 
-With this command you can set the usage category for Pages and reports from an old txt menu file. Previously you have to export from C/SIDE a txt objext with all the menus. Then, you can follow these steps:
+With this command you can set the usage category for Pages and Reports from an old txt menu file. Previously you had to export from C/SIDE a txt object with all the menus. Then, you can follow these steps:
 
 * Execute command "JAL Set usage category from an old txt menu file".
 * Select with a dialog the txt file with the C/SIDE menus.
-* And then the commnad will set automatically the usage category for all the objects in the workspace reading them from menu file.
+* And then the command will set automatically the usage category for all the objects in the workspace reading them from menu file.
 * Go to File > Save all.
 
 ## Fix Tx2AL issues
@@ -223,3 +223,7 @@ Prefix to exclude could be set with and regular expression.
 #### 0.0.26
 
 New command "JAL Set usage category from an old txt menu file".
+
+#### 0.0.27
+
+Apply variable renaming to Enum object too.
