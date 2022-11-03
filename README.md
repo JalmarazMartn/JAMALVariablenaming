@@ -227,3 +227,8 @@ New command "JAL Set usage category from an old txt menu file".
 #### 0.0.27
 
 Apply variable renaming to Enum object too.
+
+#### 0.0.28
+
+Remove commands: "JAM Fix Implicit REC in page fields" and "JAM Fix Txt2AL issues App Area, Scope".
+Better done in others apps.
