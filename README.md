@@ -41,6 +41,7 @@ This command renames the variables in editor selection. Notice that this command
 
 ![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/SelRename.gif?raw=true)
 
+This option is available in the context menu.
 ## JAL Set usage category from an old txt menu file
 
 With this command you can set the usage category for Pages and Reports from an old txt menu file. Previously you had to export from C/SIDE a txt object with all the menus. Then, you can follow these steps:
@@ -232,3 +233,7 @@ Apply variable renaming to Enum object too.
 
 Remove commands: "JAM Fix Implicit REC in page fields" and "JAM Fix Txt2AL issues App Area, Scope".
 Better done in others apps.
+
+#### 0.0.29
+
+Context menu for rename selected variables
