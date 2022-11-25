@@ -88,11 +88,10 @@ async function GetProcedureParameters()
 }
 function GetOnlyParam(fullMatch,declarationOnly)
 {
-	return declarationOnly.replace(/\s*(var)*\s*(.*)/gmi,'$2')+',';
+	return declarationOnly.replace(/\s*(var )*\s*(.*)/gmi,'$2')+',';
 }
 function GetProcedureStartColumn(LineText= '') 
 {
-
 	const regexpProcedureName = /[^\s|\.]+\(/;
 	return LineText.search(regexpProcedureName);		
 }

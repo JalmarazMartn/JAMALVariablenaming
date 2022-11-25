@@ -237,3 +237,7 @@ Better done in others apps.
 #### 0.0.29
 
 Context menu for rename selected variables
+
+#### 0.0.30
+
+Fixed an error removing 'var ' clause when using completion item 'tincludeParams'
