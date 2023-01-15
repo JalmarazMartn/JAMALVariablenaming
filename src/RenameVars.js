@@ -59,12 +59,14 @@ async function lineProcess(i, CurrDoc) {
 	await ALVariableNaming(i, line.text);
 }
 async function ALVariableNaming(lineNumber = 0, original) {
-	var varDecMatches = original.match(GetRegExpVarDeclaration(true));
+	let convertedOriginal = getConvertedString(original);
+	const regExpVarDeclaration = GetRegExpVarDeclaration(true);
+	var varDecMatches = convertedOriginal.match(regExpVarDeclaration);
 	if (!varDecMatches) { return };
 	//subscriptionOnDidChange.dispose();//new
 	for (var i = 0; i < Object.keys(varDecMatches).length; i++) {
 		var element = varDecMatches[i];
-		original = await MatchProcess(element, original, lineNumber);
+		convertedOriginal = await MatchProcess(element, convertedOriginal, lineNumber);
 	}
 }
 async function MatchProcess(element, original = '', lineNumber = 0) {
@@ -72,7 +74,7 @@ async function MatchProcess(element, original = '', lineNumber = 0) {
 	const FullMatch = singleMatch[0];
 	const VarName = singleMatch[5];
 	let posVarName = original.indexOf(FullMatch) + FullMatch.indexOf(VarName);
-	const VarSubtype = singleMatch[7];
+	const VarSubtype = singleMatch[7];	
 	var NewVarName = GetNewVarName(VarSubtype);
 	if (VarName.indexOf(NewVarName) >= 0)
 	{return original}
@@ -87,7 +89,7 @@ async function MatchProcess(element, original = '', lineNumber = 0) {
 
 function GetNewVarName(VarSubtype = '') {
 	//var NewVarName = VarSubtype.replace(/\s|"|temporary|\/|\.|-/gi, '');
-	var NewVarName = VarSubtype.replace(/temporary|[^a-zA-Z0-9]/gi, '');
+	var NewVarName = getConvertedString(VarSubtype.replace(/temporary|[^a-zA-Z0-9]/gi, ''));
 	if (VarSubtype.match(/temporary/i)) { NewVarName = 'Temp' + NewVarName }	
 	if (GetExcludePrefixInRename())
 	{
@@ -137,11 +139,7 @@ function GetExcludePrefixInRename()
 }
 function GetAppPrefix()
 {
-    const ExtConf = vscode.workspace.getConfiguration('');
-    var AppPrefix = '';
-	if (ExtConf) {
-		AppPrefix = ExtConf.get('AppPrefix');
-    }
+	var AppPrefix = GetConfigValue('AppPrefix');
     if ((!AppPrefix) || (AppPrefix == ''))
     {
         vscode.window.showErrorMessage("You must specify a value for AppPrefix in extension settings");
@@ -218,7 +216,7 @@ async function WriteVarHeader()
 async function PutTailSemicolon(document,LineNumber)
 {
 	const LineText = document.lineAt(LineNumber).text;	
-	const LineTextWithColon = LineText + ';';	
+	const LineTextWithColon = getConvertedString(LineText) + ';';	
 	if (LineText.search(GetRegExpVarDeclaration(false)) >= 0)
 	{
 		return;
@@ -265,4 +263,48 @@ function SnippetVariableALArg(commandName,detail,insertText,documentation)
 	commandCompletion.documentation = documentation; 
 	SnippetTrigered = true;
 	return [commandCompletion];
+}
+
+function getConvertedString(inputString='') {
+	let outputString = replaceConfigChars(inputString);
+	outputString = getStringWithCapsInWordStart(outputString);
+	return outputString;
+}
+function replaceConfigChars(inputString='') {
+	let outputString = inputString;
+	const CharsFrom = GetConfigValue('CharsFrom');
+	const CharsTo = GetConfigValue('CharsTo');
+	if (CharsFrom.length == 0)
+	{
+		return outputString;	
+	}
+	if (CharsFrom.length !== CharsTo.length)
+	{
+		return outputString;
+	}
+	for (let index = 0; index < CharsFrom.length - 1; index++) {
+		const charFrom = CharsFrom[index];
+		const charTo = CharsTo[index];
+		outputString  = outputString.replace(charFrom,charTo);
+	}
+	return outputString;
+}
+function getStringWithCapsInWordStart(inputString='')
+{
+	const regExpLowerStart = /([\s|"][a-z])/g;
+	let outputString = inputString.replace(regExpLowerStart,convertMatchToUpper);
+	return outputString;
+}
+function convertMatchToUpper(str,p1)
+{
+	return p1.toUpperCase();
+}
+function GetConfigValue(keyName='')
+{
+    const ExtConf = vscode.workspace.getConfiguration('');
+	if (ExtConf) 
+	{
+		return ExtConf.get(keyName);
+    }
+	return '';
 }
