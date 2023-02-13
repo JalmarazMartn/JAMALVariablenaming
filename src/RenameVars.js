@@ -56,7 +56,10 @@ module.exports = {
 }
 async function lineProcess(i, CurrDoc) {
 	var line = CurrDoc.lineAt(i);
-	await ALVariableNaming(i, line.text);
+	if (!isSubscriptionProcedure(i,CurrDoc))
+	{
+		await ALVariableNaming(i, line.text);
+	}
 }
 async function ALVariableNaming(lineNumber = 0, original) {
 	let convertedOriginal = getConvertedString(original);
@@ -307,4 +310,15 @@ function GetConfigValue(keyName='')
 		return ExtConf.get(keyName);
     }
 	return '';
+}
+function isSubscriptionProcedure(lineNumber=0,CurrDoc)
+{
+	for (let i = lineNumber; i > 0; i--) {
+		const line = CurrDoc.lineAt(i - 1);
+		if (line.text !== '')
+		{
+			return line.text.search('EventSubscriber') !== -1;
+		}
+	}
+	return false;
 }

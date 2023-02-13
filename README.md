@@ -9,7 +9,7 @@ For this purpose, we have these commands:
 * `JAL Var Stop AL variable editing mode`
 * `JAL Var Selection variable naming`
 
-## Snippet Code .
+## Snippet Code.
 
 ![Snippet mode](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/SnippetStyle.gif?raw=true)
 

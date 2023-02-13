@@ -132,3 +132,7 @@ Fixed an error removing 'var ' clause when using completion item 'tincludeParams
 ## 0.0.31
 
 Implemented CharsFrom, CharsTo conversion. In the final name of the variable, CharsFrom will be switched to CharsTo settings. If we have in from setting áéíóú and to aeiou when we have in the name "Mov. posición '' in the final name we will have MovPosicion, converting "ó" to "o".
+
+## 0.0.32
+
+Avoid renaming parameters in event subscription procedures. Make no sense to rename these variables, because the names must be the same that the publisher procedure.
