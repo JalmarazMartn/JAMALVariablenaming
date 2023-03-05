@@ -29,7 +29,7 @@
 	"contributes": {
 		"menus": {
 			"editor/context": [{
-				"when": "resourceLangId == al",
+				"when": "resourceLangId == al && config.JALVarNaming.EnableContextMenus",
 				"group":"1_modification",
 				"command": "JALVarNaming.AlVarNameSel"
 		  }
@@ -57,6 +57,11 @@
 					"type": "boolean",
 					"default": false,
 					"description": "Exclude App prefix in AL variable renaming"
+				},
+				"JALVarNaming.EnableContextMenus": {
+					"type": "boolean",
+					"default": true,					
+					"description": "Enable extension context menus"
 				}
 			}
 		},

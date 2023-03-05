@@ -136,3 +136,7 @@ Implemented CharsFrom, CharsTo conversion. In the final name of the variable, Ch
 ## 0.0.32
 
 Avoid renaming parameters in event subscription procedures. Make no sense to rename these variables, because the names must be the same that the publisher procedure.
+
+## 0.0.33
+
+Disable context menus (if you want to) with JALVarNaming.EnableContextMenus setting. Include TestRequestPage object.

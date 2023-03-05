@@ -41,7 +41,8 @@ This command renames the variables in editor selection. Notice that this command
 
 ![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/SelRename.gif?raw=true)
 
-This option is available in the context menu.
+This option is available in the context menu. You can disable the context menu removing the check in JALVarNaming.EnableContextMenus extension config.
+
 ## JAL Set usage category from an old txt menu file
 
 With this command you can set the usage category for Pages and Reports from an old txt menu file. Previously you had to export from C/SIDE a txt object with all the menus. Then, you can follow these steps:
@@ -106,6 +107,7 @@ This extension contributes the following settings:
 * `CharsFrom` `CharsTo`: In the final name of the variable, CharsFrom will be switched to CharsTo settings. If we have in from setting áéíóú and to aeiou when we have in the name "Mov. posición '' in the final name we will have MovPosicion, converting "ó" to "o".
 * `ExcludePrefixInRename`: Set true (default false) to exclude your prefix from renaming.
 * `AppPrefix`: Set here your App prefix to exclude it in renaming (see previous setting). You can set here a regular expression too. Example: `AppPrefix: "TIP[\d]*"`
+* `JALVarNaming.EnableContextMenus`: Option to enable extension context menus.
 
 ## Known Issues
 
