@@ -140,3 +140,7 @@ Avoid renaming parameters in event subscription procedures. Make no sense to ren
 ## 0.0.33
 
 Disable context menus (if you want to) with JALVarNaming.EnableContextMenus setting. Include TestRequestPage object.
+
+## 0.0.34
+
+Disable commands in command palette out of al language editor.
