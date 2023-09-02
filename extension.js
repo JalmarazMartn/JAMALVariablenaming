@@ -18,7 +18,7 @@ function activate(context) {
 	});
 	context.subscriptions.push(disposableSelection);
 	let setUsageCategory = vscode.commands.registerCommand('JALVarNaming.setUsageCategory', function () {
-		const setUsageCategory = require('./src/setUsageCatagory');		
+		const setUsageCategory = require('./src/setUsageCatagory');
 		setUsageCategory.setUsageCategory();
 	}
 	);
@@ -67,6 +67,12 @@ function activate(context) {
 	});
 	context.subscriptions.push(disposableStopCatchDocumentChanges);
 
+	let disposablecreateOptionsCSV = vscode.commands.registerCommand('JALVarNaming.createOptionsCSV', function () {
+		const optionToEnum = require('./src/optionToEnum.js');
+		optionToEnum.createOptionsCSV();
+	});
+	context.subscriptions.push(disposablecreateOptionsCSV);
+
 	context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
 		{ language: 'al', scheme: 'file' },
 
@@ -105,13 +111,13 @@ function activate(context) {
 	));
 
 	let FixTxt2ALIssues = vscode.commands.registerCommand('JALVarNaming.FixTxt2ALIssues', function () {
-		const AddApplicationArea = require('./src/AddApplicationArea.js');		
+		const AddApplicationArea = require('./src/AddApplicationArea.js');
 		AddApplicationArea.changeInWorkspace();
 	});
 	context.subscriptions.push(FixTxt2ALIssues);
 
 	let FixImplicitREC = vscode.commands.registerCommand('JALVarNaming.FixImplicitREC', function () {
-		const AddApplicationArea = require('./src/AvoidImplicitREC.js');		
+		const AddApplicationArea = require('./src/AvoidImplicitREC.js');
 		AddApplicationArea.FieldDeclarationAllWorkspace();
 	});
 	context.subscriptions.push(FixImplicitREC);

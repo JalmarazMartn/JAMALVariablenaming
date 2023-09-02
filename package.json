@@ -20,7 +20,6 @@
 		"onCommand:JALVarNaming.AlVarNameSel",
 		"onCommand:JALVarNaming.setUsageCategory",
 		"onCommand:JALVarNaming.CatchDocumentChanges",
-		"onCommand:JALVarNaming.CatchDocumentChangesSnp",		
 		"onCommand:JALVarNaming.StopCatchDocumentChanges",
 		"onCommand:JALVarNaming.ReplaceSnippetNameByParameters",
 		"onStartupFinished"
@@ -38,10 +37,6 @@
 			{
 			  "command": "JALVarNaming.AlVarNameSel",
 			  "when": "editorLangId == al"
-			},
-			{
-				"command": "JALVarNaming.CatchDocumentChangesSnp",
-				"when": "editorLangId == al"
 			},
 			{
 				"command": "JALVarNaming.CatchDocumentChanges",
@@ -99,6 +94,10 @@
 			{
 				"command": "JALVarNaming.setUsageCategory",
 				"title": "JAL Set usage category from an old txt menu file"
+			},
+			{
+				"command": "JALVarNaming.createOptionsCSV",
+				"title": "JAL Option to enum. Create initial CSV"
 			}
 		],
 		"snippets": [
