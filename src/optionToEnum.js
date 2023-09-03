@@ -1,4 +1,5 @@
 const objDeclRegExpr = /(tableextension|table)\s*(\d+)/i;
+const enumDeclRegExpr = /enum\s*(\d+)/i;
 const regexpField = /field\((.*);(.*);\s*option/i;
 const vscode = require('vscode');
 const carriage = '\r\n';
@@ -74,7 +75,7 @@ async function ProcessEnumFile() {
 				"ObjectType": Elements[0],
 				"ObjectNumber": Elements[1],
 				"FieldID": Elements[2],
-				"OptionMembers": Elements[4].replace(/'/g,'"'),
+				"OptionMembers": Elements[4].replace(/'/g, '"'),
 				"OptionCaptions": Elements[5],
 				"NewEnumID": Elements[6],
 				"NewEnumName": Elements[7]
@@ -92,7 +93,7 @@ function getOptionValues(ALDocument, declineNumber = 0, regex) {
 	for (let index = declineNumber; index < ALDocument.lineCount - 1; index++) {
 		let matchOption = ALDocument.lineAt(index).text.match(regex);
 		if (matchOption) {
-			return matchOption[1].replace(/"/g,'\'');
+			return matchOption[1].replace(/"/g, '\'');
 		}
 		if (ALDocument.lineAt(index).text.indexOf("}") > -1) {
 			return '';
@@ -102,20 +103,20 @@ function getOptionValues(ALDocument, declineNumber = 0, regex) {
 }
 
 async function createEnums(enumsJSON) {
-	const enumFolder= vscode.workspace.workspaceFolders[0].uri.fsPath + '/src/enum/';
+	const enumFolder = vscode.workspace.workspaceFolders[0].uri.fsPath + '/src/enum/';
 	//const enumFolder= 'c:/Rutas/';
+	const existingEnumsIDS = await getExistingEnumIDS();
 	for (let index = 1; index < enumsJSON.length; index++) {
-		const newEnum = enumsJSON[index];		
-		const fileUri = getEnumUri(enumFolder,newEnum.NewEnumName);
-		if (!existsEnum(newEnum))
-		{
+		const newEnum = enumsJSON[index];
+		const fileUri = getEnumUri(enumFolder, newEnum.NewEnumName);
+		if (!existsEnum(newEnum, existingEnumsIDS)) {
 			vscode.workspace.fs.writeFile(fileUri, Buffer.from(getFileEnum(newEnum)));
 		}
 	}
 }
 
-function getEnumUri(folderName,enumName='') {
-	const finalUri = folderName + '\\' +enumName.replace(/\s/g,'') + '.Enum.al';
+function getEnumUri(folderName, enumName = '') {
+	const finalUri = folderName + '\\' + enumName.replace(/\s/g, '') + '.Enum.al';
 	return vscode.Uri.file(finalUri);
 }
 
@@ -131,8 +132,7 @@ function getFileEnum(newEnum) {
 		enumDeclaration = enumDeclaration + 'value(' + index.toString() + ';' + optionMember + ')' + carriage;
 		enumDeclaration = enumDeclaration + '{' + carriage;
 		if (optionCaptions) {
-			if (optionCaptions[index])
-			{
+			if (optionCaptions[index]) {
 				enumDeclaration = enumDeclaration + 'Caption = \'' + optionCaptions[index] + '\';' + carriage;
 			}
 		}
@@ -142,6 +142,25 @@ function getFileEnum(newEnum) {
 	return enumDeclaration;
 }
 
-function existsEnum(newEnum) {
+function existsEnum(newEnum, existingEnumIDS) {
+	for (let index = 0; index < existingEnumIDS.length; index++) {
+		if (existingEnumIDS[index] == newEnum.NewEnumID) {
+			return true;
+		}
+	}
 	return false;
+}
+async function getExistingEnumIDS() {
+	const AllDocs = await vscode.workspace.findFiles('**/*.{al}');
+	let existingEnumIDS = [];
+	for (let index = 0; index < AllDocs.length; index++) {
+		var ALDocument = await vscode.workspace.openTextDocument(AllDocs[index]);
+		const Library = require('./Renumber/Library.js');
+		const DeclarationLineText = Library.GetDeclarationLineText(ALDocument);
+		const enumDeclaration = DeclarationLineText.match(enumDeclRegExpr);
+		if (enumDeclaration !== null) {
+			existingEnumIDS.push(enumDeclaration[1]);
+		}
+	}
+	return existingEnumIDS;
 }
