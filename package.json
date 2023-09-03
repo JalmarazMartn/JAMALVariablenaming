@@ -98,6 +98,10 @@
 			{
 				"command": "JALVarNaming.createOptionsCSV",
 				"title": "JAL Option to enum. Create initial CSV"
+			},
+			{
+				"command": "JALVarNaming.processEnumFile",
+				"title": "JAL Option to enum. Create new enums and substitute options"
 			}
 		],
 		"snippets": [

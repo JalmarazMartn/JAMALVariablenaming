@@ -67,11 +67,17 @@ function activate(context) {
 	});
 	context.subscriptions.push(disposableStopCatchDocumentChanges);
 
-	let disposablecreateOptionsCSV = vscode.commands.registerCommand('JALVarNaming.createOptionsCSV', function () {
+	let disposableCreateOptionsCSV = vscode.commands.registerCommand('JALVarNaming.createOptionsCSV', function () {
 		const optionToEnum = require('./src/optionToEnum.js');
 		optionToEnum.createOptionsCSV();
 	});
-	context.subscriptions.push(disposablecreateOptionsCSV);
+	context.subscriptions.push(disposableCreateOptionsCSV);
+
+	let disposableProcessEnumFile = vscode.commands.registerCommand('JALVarNaming.processEnumFile', function () {
+		const optionToEnum = require('./src/optionToEnum.js');
+		optionToEnum.ProcessEnumFile();
+	});
+	context.subscriptions.push(disposableProcessEnumFile);
 
 	context.subscriptions.push(vscode.languages.registerCompletionItemProvider(
 		{ language: 'al', scheme: 'file' },
