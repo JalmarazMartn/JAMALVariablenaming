@@ -73,7 +73,7 @@ async function ProcessEnumFile() {
 		enumsJSON.push(
 			{
 				"ObjectType": Elements[0],
-				"ObjectNumber": Elements[1],
+				"ObjectID": Elements[1],
 				"FieldID": Elements[2],
 				"OptionMembers": Elements[4].replace(/'/g, '"'),
 				"OptionCaptions": Elements[5],
@@ -83,7 +83,7 @@ async function ProcessEnumFile() {
 	});
 	rd.on('close', function () {
 		createEnums(enumsJSON);
-		//replaceOptions(enumsJSON);
+		replaceInWS(enumsJSON);
 	}
 	);
 }
@@ -163,4 +163,46 @@ async function getExistingEnumIDS() {
 		}
 	}
 	return existingEnumIDS;
+}
+async function replaceInWS(enumsJSON) {
+	const AllDocs = await vscode.workspace.findFiles('**/*.{al}');
+	for (let index = 0; index < AllDocs.length; index++) {
+		var ALDocument = await vscode.workspace.openTextDocument(AllDocs[index]);
+		await replaceOptions(ALDocument, enumsJSON);
+	}
+	vscode.window.showInformationMessage('Option to enum finished');
+}
+async function replaceOptions(ALDocument, enumsJSON) {
+	const Library = require('./Renumber/Library.js');
+    const DeclarationLineText = Library.GetDeclarationLineText(ALDocument);
+    if ((DeclarationLineText.search(objDeclRegExpr) < 0)) {
+        return;
+    }
+	let objDeclaration = DeclarationLineText.match(objDeclRegExpr);
+	for (let index = 1; index < ALDocument.lineCount ; index++) {
+		const line = ALDocument.lineAt(index).text;
+		if (line.search(regexpField) >= 0) {
+			for (let indexJSON = 0; indexJSON < enumsJSON.length; indexJSON++) {
+				if ((line.match(regexpField)[1] === enumsJSON[indexJSON].FieldID) &&
+				(objDeclaration[1] === enumsJSON[indexJSON].ObjectType) &&
+				(objDeclaration[2] === enumsJSON[indexJSON].ObjectID)) {
+					await replaceOption(ALDocument, enumsJSON[indexJSON],index);
+				}
+			}
+		}
+	}
+}
+async function replaceOption(ALDocument, enumJSON, lineNumber) {	
+	const line = ALDocument.lineAt(lineNumber).text;
+	if (line.search(regexpField) < 0)
+	{
+		return;
+	}
+	const newLine = line.replace(/\s*option/i, 'enum ' + enumJSON.NewEnumName);
+	const WSEdit = new vscode.WorkspaceEdit;
+	const PositionOpen = new vscode.Position(lineNumber, 0);
+	const PostionEnd = new vscode.Position(lineNumber, line.length);
+	await WSEdit.replace(await ALDocument.uri, new vscode.Range(PositionOpen, PostionEnd),
+	newLine);
+	await vscode.workspace.applyEdit(WSEdit);
 }
