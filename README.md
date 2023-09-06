@@ -60,8 +60,16 @@ New command "JAM Fix Txt2AL issues" to fix Tx2AL issues. Steps:
 3. Automatically fix the Tx2AL issues: set application area with basic and suite and remove scope internal statements.
 4. Save all changed files with File->Save All.
 
-## Avoid implicit REC in page fields
+## Option to Enum: Beta
 
+Utility to convert Options to enum. Steps:
+
+1. Command "JAL Option to enum. Create initial CSV" make a csv with all options fields.
+2. Edit the CSV file editing columns "New Enum Id" and "New Enum Name".
+3. Command "JAL Option to enum. Create new enums and substitute options". As named, this command create new enums file in src\enums folder and substitute all option by enums in existing files.
+
+## Avoid implicit REC in page fields
+**_ deprecated!!
 New command "JAM Fix Implicit REC in page fields" to avoid implicit REC in page fields. Steps:
 1. With F1 execute "JAM Fix Implicit REC in page fields".
 2. Confirm the pop up message with yes.

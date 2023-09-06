@@ -87,7 +87,6 @@ async function ProcessEnumFile() {
 	}
 	);
 }
-
 function getOptionValues(ALDocument, declineNumber = 0, regex) {
 
 	for (let index = declineNumber; index < ALDocument.lineCount - 1; index++) {
@@ -174,35 +173,62 @@ async function replaceInWS(enumsJSON) {
 }
 async function replaceOptions(ALDocument, enumsJSON) {
 	const Library = require('./Renumber/Library.js');
-    const DeclarationLineText = Library.GetDeclarationLineText(ALDocument);
-    if ((DeclarationLineText.search(objDeclRegExpr) < 0)) {
-        return;
-    }
+	const DeclarationLineText = Library.GetDeclarationLineText(ALDocument);
+	if ((DeclarationLineText.search(objDeclRegExpr) < 0)) {
+		return;
+	}
 	let objDeclaration = DeclarationLineText.match(objDeclRegExpr);
-	for (let index = 1; index < ALDocument.lineCount ; index++) {
+	for (let index = 1; index < ALDocument.lineCount; index++) {
 		const line = ALDocument.lineAt(index).text;
 		if (line.search(regexpField) >= 0) {
 			for (let indexJSON = 0; indexJSON < enumsJSON.length; indexJSON++) {
 				if ((line.match(regexpField)[1] === enumsJSON[indexJSON].FieldID) &&
-				(objDeclaration[1] === enumsJSON[indexJSON].ObjectType) &&
-				(objDeclaration[2] === enumsJSON[indexJSON].ObjectID)) {
-					await replaceOption(ALDocument, enumsJSON[indexJSON],index);
+					(objDeclaration[1] === enumsJSON[indexJSON].ObjectType) &&
+					(objDeclaration[2] === enumsJSON[indexJSON].ObjectID)) {
+					await replaceOption(ALDocument, enumsJSON[indexJSON], index);
 				}
 			}
 		}
 	}
 }
-async function replaceOption(ALDocument, enumJSON, lineNumber) {	
+async function replaceOption(ALDocument, enumJSON, lineNumber) {
 	const line = ALDocument.lineAt(lineNumber).text;
-	if (line.search(regexpField) < 0)
-	{
+	if (line.search(regexpField) < 0) {
 		return;
 	}
-	const newLine = line.replace(/\s*option/i, 'enum ' + enumJSON.NewEnumName);
+	const newLine = line.replace(/\s*;\s*option/i, '; enum ' + doubleQuoteIfNeeded(enumJSON.NewEnumName));
 	const WSEdit = new vscode.WorkspaceEdit;
 	const PositionOpen = new vscode.Position(lineNumber, 0);
 	const PostionEnd = new vscode.Position(lineNumber, line.length);
 	await WSEdit.replace(await ALDocument.uri, new vscode.Range(PositionOpen, PostionEnd),
-	newLine);
+		newLine);
+	
 	await vscode.workspace.applyEdit(WSEdit);
+	await removeOptionValues(ALDocument,lineNumber);
+}
+async function removeOptionValues(ALDocument, lineNumber = 0) {
+	for (let index = lineNumber+1; index < ALDocument.lineCount - 1; index++) {
+		const lineText = ALDocument.lineAt(index).text;
+		let newLineText = lineText.replace(/.+Option.+;/gi, '');
+		const PositionOpen = new vscode.Position(index, 0);
+		const PostionEnd = new vscode.Position(index, lineText.length);
+		const WSEdit = new vscode.WorkspaceEdit;
+		await WSEdit.replace(await ALDocument.uri, new vscode.Range(PositionOpen, PostionEnd),
+			newLineText);
+		await vscode.workspace.applyEdit(WSEdit);
+		if (ALDocument.lineAt(index).text.indexOf("}") > -1) {
+			return;
+		}
+	}
+}
+function doubleQuoteIfNeeded(originalText='')
+{
+	let finalText = originalText;
+	finalText = originalText.replace(/"/g,'');
+	if (finalText.search(/\s/) >-1)
+	{
+		finalText = '"' + finalText + '"';
+	}
+	return finalText;
+	
 }

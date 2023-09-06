@@ -144,3 +144,7 @@ Disable context menus (if you want to) with JALVarNaming.EnableContextMenus sett
 ## 0.0.34
 
 Disable commands in command palette out of al language editor.
+
+## 0.0.35
+
+Beta!!! Commands "JAL Option to enum. Create initial CSV" and  "JAL Option to enum. Create new enums and substitute options". 
