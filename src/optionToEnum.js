@@ -7,6 +7,10 @@ const sep = ';';
 const regexOptionMembers = /OptionMembers\s*=\s*(.+);/;
 const regexOptionCaptions = /OptionCaption\s*=\s*\'(.+)\';/;
 const optionSep = ',';
+let OutputChannel = vscode.window.createOutputChannel('Substitute options');
+//Mostrar output channel
+//Chequear captions
+//mensajes de aviso
 module.exports = {
 	createOptionsCSV: function () {
 		createOptionsCSV();
@@ -81,7 +85,7 @@ async function ProcessEnumFile() {
 				"NewEnumName": Elements[7]
 			});
 	});
-	rd.on('close', function () {
+	rd.on('close', function () {		
 		createEnums(enumsJSON);
 		replaceInWS(enumsJSON);
 	}
@@ -102,6 +106,8 @@ function getOptionValues(ALDocument, declineNumber = 0, regex) {
 }
 
 async function createEnums(enumsJSON) {
+    OutputChannel.clear();
+    OutputChannel.show();
 	const enumFolder = vscode.workspace.workspaceFolders[0].uri.fsPath + '/src/enum/';
 	//const enumFolder= 'c:/Rutas/';
 	const existingEnumsIDS = await getExistingEnumIDS();
@@ -110,6 +116,11 @@ async function createEnums(enumsJSON) {
 		const fileUri = getEnumUri(enumFolder, newEnum.NewEnumName);
 		if (!existsEnum(newEnum, existingEnumsIDS)) {
 			vscode.workspace.fs.writeFile(fileUri, Buffer.from(getFileEnum(newEnum)));
+			OutputChannel.appendLine(newEnum.NewEnumName + ' created.');
+		}
+		else
+		{
+			OutputChannel.appendLine(newEnum.NewEnumName + ' already exists.');
 		}
 	}
 }
@@ -186,6 +197,7 @@ async function replaceOptions(ALDocument, enumsJSON) {
 					(objDeclaration[1] === enumsJSON[indexJSON].ObjectType) &&
 					(objDeclaration[2] === enumsJSON[indexJSON].ObjectID)) {
 					await replaceOption(ALDocument, enumsJSON[indexJSON], index);
+					OutputChannel.appendLine(enumsJSON[indexJSON].FieldID.toString() + ' replaced');
 				}
 			}
 		}

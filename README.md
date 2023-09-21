@@ -66,7 +66,7 @@ Utility to convert Options to enum. Steps:
 
 1. Command "JAL Option to enum. Create initial CSV" make a csv with all options fields.
 2. Edit the CSV file editing columns "New Enum Id" and "New Enum Name".
-3. Command "JAL Option to enum. Create new enums and substitute options". As named, this command create new enums file in src\enums folder and substitute all option by enums in existing files.
+3. Command "JAL Option to enum. Create new enums and substitute options". As named, this command creates new enums file in the src\enums folder and substitutes all options by enums in existing files.
 
 ## Avoid implicit REC in page fields
 **_ deprecated!!
