@@ -55,7 +55,7 @@ async function GetProcedureParameters()
 		return '';
 	}
 	
-	let siganturaFunction = await vscode.commands.executeCommand('vscode.executeHoverProvider',document.uri, new vscode.Position(ProcedureLine,ProcedureStartColumn+1));	
+	let siganturaFunction = await vscode.commands.executeCommand('vscode.executeHoverProvider',document.uri, new vscode.Position(ProcedureLine,ProcedureStartColumn-1));
 	if (!siganturaFunction)
 	{
 		//ShowErrorMessage('No procedure in the line or lack of "(" open. Action cancelled.');
@@ -92,6 +92,14 @@ function GetOnlyParam(fullMatch,declarationOnly)
 }
 function GetProcedureStartColumn(LineText= '') 
 {
-	const regexpProcedureName = /[^\s|\.]+\(/;
-	return LineText.search(regexpProcedureName);		
+	const toPosition = vscode.window.activeTextEditor.selections[0].start.character;
+	for (let index = toPosition; index >= 0; index--) {
+		if (LineText[index] == '(')
+		{
+			return(index)
+		}
+		
+	}
+	/*const regexpProcedureName = /[^\s|\.]+\(/;
+	return LineText.search(regexpProcedureName);		*/
 }

@@ -7,12 +7,15 @@ var subscriptionOnDidChange = vscode.workspace.onDidChangeTextDocument(HandleDoc
 var subscriptionOnDidChangeSnp = vscode.workspace.onDidChangeTextDocument(HandleDocumentChanges);
 subscriptionOnDidChange.dispose();
 subscriptionOnDidChangeSnp.dispose();
+let globalDocVars = [];
 module.exports = {
 	changeSelection: async function () {
 		var currEditor = vscode.window.activeTextEditor;
 		var selection = currEditor.selection;
 		const startLine = selection.start.line;
 		const endLine = selection.end.line;
+		const getSymbols = require('./getSymbols.js');
+		globalDocVars = await getSymbols.GetDocumentVariables();
 		let CurrDoc = currEditor.document;
 
 		for (var i = startLine; i <= endLine; i++) {
@@ -24,6 +27,8 @@ module.exports = {
 		var currEditor = vscode.window.activeTextEditor;
 		let CurrDoc = currEditor.document;
 		//const WSEdit = new vscode.WorkspaceEdit;
+		const getSymbols = require('./getSymbols.js');
+		globalDocVars = await getSymbols.GetDocumentVariables();
 		for (var i = 0; i < CurrDoc.lineCount; i++) {
 			await lineProcess(i, CurrDoc);
 		}
@@ -81,6 +86,10 @@ async function MatchProcess(element, original = '', lineNumber = 0) {
 	var NewVarName = GetNewVarName(VarSubtype);
 	if (VarName.indexOf(NewVarName) >= 0)
 	{return original}
+	if (await moreThanOneInScope(VarSubtype,lineNumber))
+	{
+		NewVarName =  'Multiple_' + NewVarName + '_Old_' + VarName;
+	}
 	var edit = await vscode.commands.executeCommand('vscode.executeDocumentRenameProvider',
 		vscode.window.activeTextEditor.document.uri,
 		new vscode.Position(lineNumber, posVarName),
@@ -116,7 +125,7 @@ function GetRegExpVarDeclaration(isGlobal = false) {
 	const G2Spaces = new RegExp(/(\s*)/.source);
 	const G3VarName = new RegExp(/([A-Za-z\s0-9"]*):\s*/.source);
 	const G4VarType = new RegExp(/(Record|Page|TestPage|Report|Codeunit|Query|XmlPort|Enum|TestRequestPage)/.source);
-	const G5VarSubType = new RegExp(/([A-Za-z\s0-9"-\/]*)/.source);
+	const G5VarSubType = new RegExp(/\s*([A-Za-z\s0-9"-\/]*)/.source);
 	const G6EndStat = new RegExp(/(\)|;)/.source);
 	//const G6EndStat = new RegExp(/(\)|;|.{0})/.source);	
 
@@ -239,21 +248,6 @@ function IsALVarDeclarationLine(PrevLineText='')
 	const IsDecLine = (PrevLineText.search(GetRegExpVarDeclaration(false)) >= 0)
 	return (IsVarLine || IsDecLine);
 }
-/* function SnippetVariableAL()
-{
-	const commandName = 'talVarNaming';
-	const commandCompletion = new vscode.CompletionItem(commandName);
-	commandCompletion.kind = vscode.CompletionItemKind.Snippet;
-    commandCompletion.filterText = commandName;
-    commandCompletion.label = commandName;	
-	commandCompletion.insertText = TextWritevar;
-	commandCompletion.command = { command: 'JALVarNaming.CatchDocumentChangesSnp', title: 'Begin variable declaration' };
-	commandCompletion.detail = 'Write type and subtype of the variable and when write semicolon will be renamed';
-	commandCompletion.documentation = 'Write type and subtype of the variable and when write semicolon will be renamed'; 
-	SnippetTrigered = true;
-	return [commandCompletion];
-}
- */
 function SnippetVariableALArg(commandName,detail,insertText,documentation)
 {
 	const commandCompletion = new vscode.CompletionItem(commandName);
@@ -321,4 +315,9 @@ function isSubscriptionProcedure(lineNumber=0,CurrDoc)
 		}
 	}
 	return false;
+}
+
+async function moreThanOneInScope(VarSubtype,lineNumber) {
+		const getSymbols = require('./getSymbols.js');
+		return await getSymbols.moreThanOneInScope(VarSubtype,lineNumber,globalDocVars)			
 }
