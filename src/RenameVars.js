@@ -14,8 +14,11 @@ module.exports = {
 		var selection = currEditor.selection;
 		const startLine = selection.start.line;
 		const endLine = selection.end.line;
-		const getSymbols = require('./getSymbols.js');
-		globalDocVars = await getSymbols.GetDocumentVariables();
+		if (getRenameDuplicateSubtype())
+		{
+			const getSymbols = require('./getSymbols.js');
+			globalDocVars = await getSymbols.GetDocumentVariables();
+		}		
 		let CurrDoc = currEditor.document;
 
 		for (var i = startLine; i <= endLine; i++) {
@@ -27,8 +30,11 @@ module.exports = {
 		var currEditor = vscode.window.activeTextEditor;
 		let CurrDoc = currEditor.document;
 		//const WSEdit = new vscode.WorkspaceEdit;
-		const getSymbols = require('./getSymbols.js');
-		globalDocVars = await getSymbols.GetDocumentVariables();
+		if (getRenameDuplicateSubtype())
+		{
+			const getSymbols = require('./getSymbols.js');
+			globalDocVars = await getSymbols.GetDocumentVariables();	
+		}
 		for (var i = 0; i < CurrDoc.lineCount; i++) {
 			await lineProcess(i, CurrDoc);
 		}
@@ -86,9 +92,12 @@ async function MatchProcess(element, original = '', lineNumber = 0) {
 	var NewVarName = GetNewVarName(VarSubtype);
 	if (VarName.indexOf(NewVarName) >= 0)
 	{return original}
-	if (await moreThanOneInScope(VarSubtype,lineNumber))
+	if (getRenameDuplicateSubtype())
 	{
-		NewVarName =  'Multiple_' + NewVarName + '_Old_' + VarName;
+		if (await moreThanOneInScope(VarSubtype,lineNumber))
+		{
+			NewVarName =  'Multiple_' + NewVarName + '_Old_' + VarName;
+		}	
 	}
 	var edit = await vscode.commands.executeCommand('vscode.executeDocumentRenameProvider',
 		vscode.window.activeTextEditor.document.uri,
@@ -320,4 +329,13 @@ function isSubscriptionProcedure(lineNumber=0,CurrDoc)
 async function moreThanOneInScope(VarSubtype,lineNumber) {
 		const getSymbols = require('./getSymbols.js');
 		return await getSymbols.moreThanOneInScope(VarSubtype,lineNumber,globalDocVars)			
+}
+function getRenameDuplicateSubtype()
+{
+	var RenameDuplicateSubtype = GetConfigValue('JALVarNaming.RenameDuplicateSubtype');
+    if ((!RenameDuplicateSubtype) || (RenameDuplicateSubtype == false))
+    {
+        return false
+    }
+    return(RenameDuplicateSubtype);
 }

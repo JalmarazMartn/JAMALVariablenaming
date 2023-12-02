@@ -5,9 +5,9 @@ This extension eases AL business central variable naming following its own codin
 ## Features
 
 For this purpose, we have these commands:
-* `JAL Var Begin AL variable editing mode`
-* `JAL Var Stop AL variable editing mode`
-* `JAL Var Selection variable naming`
+* `JAL Var Selection variable naming (with access from context menu)`
+* `JAL Var Begin AL variable editing mode` (could be deprecated soon)
+* `JAL Var Stop AL variable editing mode` (could be deprecated soon)
 
 ## Snippet Code.
 
@@ -19,6 +19,15 @@ The snippet behavior is this:
 - Then you write type (record, page, etc.) and when you end writing the subtype, if is the subtype has double quotes, as “Sales Header”, the extension puts “;” automatically at then end of then line and turns “WriteTypeAndSubtype” into “SaleHeader”.
 - 	If the subtype is a single word as “Item” or “Customer”, you must write manually the “;” character or press intro and then the snippet performs variable renaming.
 The great advantage to me is that you don´t have to go back to line start to change variable naming with any action, you keep coding at the same time the variable name is changed. This improves a lot the work with variables in AL. But a told previously, is my approach, there is already a good naming extension, and you can find it more complete.
+
+### JAL Var Selection variable naming.
+
+This command renames the variables in editor selection. Notice that this command executes a symbol renaming. It means that if you have declared and used the variable in its scope rename the variable using too:
+
+
+![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/SelRename.gif?raw=true)
+
+This option is available in the context menu. You can disable the context menu removing the check in JALVarNaming.EnableContextMenus extension config.
 
 
 ### JAL Var Begin AL variable editing mode
@@ -34,15 +43,6 @@ When you write type and subtype and push intro key, editing mode make this job:
 
 If you want to disable this mode you can execute with F1 "JAL Var Stop AL variable editing mode" command.
 
-### JAL Var Selection variable naming.
-
-This command renames the variables in editor selection. Notice that this command executes a symbol renaming. It means that if you have declared and used the variable in its scope rename the variable using too:
-
-
-![alt text](https://github.com/JalmarazMartn/JAMALVariablenaming/blob/master/images/SelRename.gif?raw=true)
-
-This option is available in the context menu. You can disable the context menu removing the check in JALVarNaming.EnableContextMenus extension config.
-
 ## JAL Set usage category from an old txt menu file
 
 With this command you can set the usage category for Pages and Reports from an old txt menu file. Previously you had to export from C/SIDE a txt object with all the menus. Then, you can follow these steps:
@@ -52,14 +52,6 @@ With this command you can set the usage category for Pages and Reports from an o
 * And then the command will set automatically the usage category for all the objects in the workspace reading them from menu file.
 * Go to File > Save all.
 
-## Fix Tx2AL issues
-
-New command "JAM Fix Txt2AL issues" to fix Tx2AL issues. Steps:
-1. With F1 execute "JAM Fix Txt2AL issues".
-2. Confirm the pop up message with yes.
-3. Automatically fix the Tx2AL issues: set application area with basic and suite and remove scope internal statements.
-4. Save all changed files with File->Save All.
-
 ## Option to Enum: Beta
 
 Utility to convert Options to enum. Steps:
@@ -67,14 +59,6 @@ Utility to convert Options to enum. Steps:
 1. Command "JAL Option to enum. Create initial CSV" make a csv with all options fields.
 2. Edit the CSV file editing columns "New Enum Id" and "New Enum Name".
 3. Command "JAL Option to enum. Create new enums and substitute options". As named, this command creates new enums file in the src\enums folder and substitutes all options by enums in existing files.
-
-## Avoid implicit REC in page fields
-**_ deprecated!!
-New command "JAM Fix Implicit REC in page fields" to avoid implicit REC in page fields. Steps:
-1. With F1 execute "JAM Fix Implicit REC in page fields".
-2. Confirm the pop up message with yes.
-3. Automatically put .rec in page fields declaration.
-4. Save all changed files with File->Save All.
 
 ### Snippet Include Parameters
 
@@ -116,6 +100,7 @@ This extension contributes the following settings:
 * `ExcludePrefixInRename`: Set true (default false) to exclude your prefix from renaming.
 * `AppPrefix`: Set here your App prefix to exclude it in renaming (see previous setting). You can set here a regular expression too. Example: `AppPrefix: "TIP[\d]*"`
 * `JALVarNaming.EnableContextMenus`: Option to enable extension context menus.
+* `JALVarNaming.RenameDuplicateSubtype`: Option to enable this behavior: more than one occurrences in same scope will be renamed as 'Multiple_' + Subtype + '_Old_' + old var name
 
 ## Known Issues
 

@@ -3,7 +3,7 @@
 	"displayName": "JAL Variable Naming",
 	"description": "Ease AL Naming following BC rules",
 	"publisher": "JessAlmarazMartin",
-	"version": "0.0.35",
+	"version": "0.0.36",
 	"repository": "https://github.com/JalmarazMartn/JAMALVariablenaming",	
 	"icon": "images/Programming-Variable-icon.png",
 	"engines": {
@@ -75,7 +75,12 @@
 					"type": "boolean",
 					"default": true,					
 					"description": "Enable extension context menus"
-				}
+				},
+				"JALVarNaming.RenameDuplicateSubtype": {
+					"type": "boolean",
+					"default": false,					
+					"description": "More than one occurrences in same scope will be renamed as 'Multiple_' + Subtype + '_Old_' + old var name"
+				}				
 			}
 		},
 		"commands": [

@@ -148,3 +148,7 @@ Disable commands in command palette out of al language editor.
 ## 0.0.35
 
 Beta!!! Commands "JAL Option to enum. Create initial CSV" and  "JAL Option to enum. Create new enums and substitute options". 
+
+## 0.0.36
+
+New configuration property JALVarNaming.RenameDuplicateSubtype: More than one occurrences in same scope will be renamed as 'Multiple_' + Subtype + '_Old_' + old var name
