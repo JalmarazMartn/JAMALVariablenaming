@@ -152,3 +152,7 @@ Beta!!! Commands "JAL Option to enum. Create initial CSV" and  "JAL Option to en
 ## 0.0.36
 
 New configuration property JALVarNaming.RenameDuplicateSubtype: More than one occurrences in same scope will be renamed as 'Multiple_' + Subtype + '_Old_' + old var name
+
+## 0.0.37
+
+Beta!!! Extracting events tools. Further version with intructions.

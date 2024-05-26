@@ -24,11 +24,12 @@ async function extractToEvent() {
     createNewLine(targetDocument,eventDeclaration,WSEdit,nextLineNumber);
     createNewLine(targetDocument,subsDeclaration[1],WSEdit,nextLineNumber);
     createNewLine(targetDocument,subsDeclaration[2],WSEdit,nextLineNumber);
-
+    createNewLine(targetDocument,'//Place of Code--->'+getLinesProcContainer(document,selection.start.line),WSEdit,nextLineNumber);
     createNewLine(targetDocument,'//-----------Previous lines------------',WSEdit,nextLineNumber);
     for (let index = previousLines.length -1 ; index >= 0; index--) {
         createNewLine(targetDocument,'//'+previousLines[index],WSEdit,nextLineNumber);
     }
+    createNewLine(targetDocument,'//-----------End Previous lines------------',WSEdit,nextLineNumber);
     createNewLine(targetDocument,document.getText(selection),WSEdit,nextLineNumber);
 
     createNewLine(targetDocument,subsDeclaration[3],WSEdit,nextLineNumber);
@@ -56,22 +57,58 @@ function getObjectDeclaration(document) {
 }
 function getLinesProcContainer(document, startLine = 0) {
     for (let index = startLine; index >= 0; index--) {
-        const procedureName = getProcedureName(document, index);
+        const procedureName = getPlaceOfCode(document, index);
         if (procedureName != '') {
             return procedureName;
         }
     }
     return '';
 }
-function getProcedureName(document, lineNumber) {
-    const regexProc = new RegExp('procedure\\((.+)\\)', 'i')
+function getPlaceOfCode(document, lineNumber) {
+    const regexProc = new RegExp('procedure.+', 'i');
+    const regexTrig = new RegExp('trigger.+', 'i')
     let procMatch = regexProc.exec(document.lineAt(lineNumber).text);
     if (procMatch !== null) {
-        return (procMatch[1])
+        return (procMatch[0])
+    }
+    let trigMatch = regexTrig.exec(document.lineAt(lineNumber).text);
+    if (trigMatch !== null) {
+        let triggerElement = getTriggerElement(document,lineNumber,trigMatch[0]);
+        if (triggerElement !== '')
+            {
+                triggerElement = triggerElement + ' - ';
+            }
+        return (triggerElement + trigMatch[0])
     }
     return '';
 }
+function getTriggerElement(document,lineNumber,triggerDeclaration='')
+{
+    const regexTrigger = new RegExp('.+OnValidate|.+OnLookup', 'i');
+    if (triggerDeclaration.search(regexTrigger) <0)
+    {
+        return '';
+    }
+    for (let index = lineNumber; index >= 0; index--) {
+        const elementName = getElementMatch(document.lineAt(index).text)        
+        if (elementName !== '')
+            {
+                return elementName;
+            }
+    }
+    return '';
 
+}
+function getElementMatch(lineText='')
+{
+    let RegExpElement = new RegExp('field\\(.+;(.+);', 'i');
+    let elementMatch = RegExpElement.exec(lineText);
+    if (elementMatch)
+    {
+        return(elementMatch[1])
+    }
+    return '';
+}
 function getPreviousLines(document, startLine = 0) {
     let previousLines = [];
     if (startLine < 1)
