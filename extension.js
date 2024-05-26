@@ -128,6 +128,13 @@ function activate(context) {
 	});
 	context.subscriptions.push(FixImplicitREC);
 
+	let disposableExtractEvents = vscode.commands.registerCommand('JALVarNaming.ExtractEvents', function () {
+		const extractEvents = require('./src/extractEvents.js');
+		extractEvents.extractToEvent();
+	});
+	context.subscriptions.push(disposableExtractEvents);
+
+
 }
 // @ts-ignore
 exports.activate = activate;
