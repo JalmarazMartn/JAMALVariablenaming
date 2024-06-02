@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+let eventFileName = [];
 const subsDeclaration = [
     "[EventSubscriber(ObjectType::ObjectType1, ObjectType2::ObjectName, 'OnSomeEvent', 'ElementName',false, false)]",
     'local procedure MyProcedure()',
@@ -14,14 +15,14 @@ module.exports = {
 
 }
 async function extractToEvent() {
+    let targetDocument = await openSubscriptionsDoc();
     const document = await vscode.window.activeTextEditor.document;
     const selection = vscode.window.activeTextEditor.selection;
     let previousLines = getPreviousLines(document, selection.start.line);
-    let targetDocument = await openSubscriptionsDoc();
     const WSEdit = new vscode.WorkspaceEdit;
     let nextLineNumber = getLastLine(targetDocument);
     const eventDeclaration = getEventDeclaration(document);
-    const varDeclarations = await getArrayOfVarDeclarations(document, selection);    
+    const varDeclarations = await getArrayOfVarDeclarations(document, selection);
     createNewLine(targetDocument, eventDeclaration, WSEdit, nextLineNumber);
     createNewLine(targetDocument, subsDeclaration[1], WSEdit, nextLineNumber);
     if (varDeclarations.length != 0) {
@@ -134,11 +135,8 @@ async function createNewLine(targetDocument, lineText = '', WSEdit, lineNumber =
         lineText + '\n');
 }
 async function openSubscriptionsDoc() {
-    var targetDocument = await vscode.workspace.openTextDocument(getDocumentUri());
+    var targetDocument = await vscode.workspace.openTextDocument(await getDocumentFullName());
     return targetDocument;
-}
-function getDocumentUri() {
-    return vscode.workspace.workspaceFolders[0].uri.fsPath + '/Susbscriptions.al';
 }
 
 function getLastLine(document) {
@@ -153,14 +151,18 @@ function getLastLine(document) {
 async function getArrayOfVarDeclarations(document, selection) {
 
     let VarDeclarations = [];
+    let keyWordsSearched = [];
     for (let lineNumber = selection.start.line; lineNumber <= selection.end.line; lineNumber++) {
         const initialColumn = getInitialColumn(document, lineNumber);
         const finalColumn = getFinalColumn(document, lineNumber, selection);
         for (let columnNumber = initialColumn; columnNumber < finalColumn; columnNumber++) {
             if (searchForDeclaration(document.lineAt(lineNumber).text, columnNumber)) {
-                const posVarDeclaration = await getPosVarDeclarationHover(document, lineNumber, columnNumber);
-                if (posVarDeclaration !== '') {
-                    pushToArrayIfnotExists(posVarDeclaration, VarDeclarations);
+                if (!ExistsKeyWord(keyWordsSearched, document.lineAt(lineNumber).text, columnNumber))
+                {
+                    const posVarDeclaration = await getPosVarDeclarationHover(document, lineNumber, columnNumber);
+                    if (posVarDeclaration !== '') {
+                        pushToArrayIfnotExists(posVarDeclaration, VarDeclarations);
+                    }
                 }
             }
         }
@@ -184,6 +186,8 @@ function getFinalColumn(document, lineNumber, selection) {
 async function getPosVarDeclarationHover(document, lineNumber, columnNumber) {
 
     let varDeclaration = '';
+    const borrar = document.lineAt(lineNumber).text.substring(columnNumber - 1);
+    console.log(borrar);
     const siganturaFunction = await vscode.commands.executeCommand('vscode.executeHoverProvider', document.uri, new vscode.Position(lineNumber, columnNumber));
     if (!siganturaFunction) {
         return varDeclaration;
@@ -226,9 +230,8 @@ async function getPosVarDeclaration(document, lineNumber, columnNumber) {
     const lineText = document.lineAt(locations[0].range.start.line).text;
     const columnFrom = locations[0].range.start.character;
     const columnTo = lineText.substring(columnFrom).search(/[;|\\)]/) + columnFrom;
-    if (columnTo > columnFrom)
-    {
-        varDeclaration = lineText.substring(columnFrom,columnTo)+';';
+    if (columnTo > columnFrom) {
+        varDeclaration = lineText.substring(columnFrom, columnTo) + ';';
     }
     /*const fullDeclarationRegEx = new RegExp(document.getText(locations[0].range) + ':.+;?', 'i');
     const fullDeclarationMatch = lineText.match(fullDeclarationRegEx);
@@ -246,11 +249,79 @@ function pushToArrayIfnotExists(newText, ArrayOfTexts) {
     ArrayOfTexts.push(newText);
 }
 function searchForDeclaration(lineText = '', columnNumber) {
-    if (lineText.substring(columnNumber, columnNumber + 1).search(/[A-Za-z0-9]/) < 0) {
+    const reservedClauses = [' then ',
+        ' in ',
+        ' if ',
+        ' do ',
+        ' begin ',
+        ' while ',
+        ' else ',
+        ' not '];
+    for (let index = 0; index < reservedClauses.length; index++) {
+        if (lineText.substring(columnNumber - 1).search(reservedClauses[index]) == 0) {
+            return false;
+        }
+
+    }
+    if (lineText.substring(columnNumber, columnNumber+1).search(/[A-Za-z0-9]/) < 0) {
+        return false;
+    }
+    if (lineText.substring(columnNumber - 1, columnNumber).search(/[A-Za-z0-9\\.><=":]/) >= 0) {
         return false;
     }
     if (columnNumber == 0) {
         return true
     }
-    return (lineText.substring(columnNumber - 1, columnNumber).search(/[A-Za-z0-9]/) < 0);
+    if (lineText.substring(columnNumber).search(/[A-Za-z0-9\\s\\.\\-]+"/i) == 0) {
+        return false;
+    }
+    return true
+
 }
+async function getDocumentFullName() {
+    if (!eventFileName[0]) {
+        setNewEventFile();
+    }
+    return eventFileName[0];
+}
+async function setNewEventFile() {
+    eventFileName[0] = await selectEventFile();
+}
+async function selectEventFile() {
+    const fileDialogOptions = {
+        canSelectMany: false,
+        openLabel: 'Open',
+        title: 'Select al File',
+        filters: {
+            'al': ['al'],
+        }
+    };
+
+    let fileUri = await vscode.window.showOpenDialog(fileDialogOptions);
+    return fileUri[0];
+}
+function ExistsKeyWord(keyWordsSearched, lineText, columnNumber) {
+    const substringLinText = lineText.substring(columnNumber);
+    let endOfWord = 0;
+    for (let index = 0; index < substringLinText.length; index++) {
+        if (substringLinText.substring(index,index+1).search(/[A-Za-z0-9]/) < 0)
+        {
+            if (endOfWord == 0)
+            {
+                endOfWord = index;
+            }
+        }        
+    }
+    if (endOfWord <= 0)
+        {
+            return true
+        }
+    const newKeyWord = substringLinText.substring(0,endOfWord);
+    for (let index = 0; index < keyWordsSearched.length; index++) {
+        if (newKeyWord == keyWordsSearched[index])
+        {return true}        
+    }
+    keyWordsSearched.push(newKeyWord);
+    return false
+}
+
