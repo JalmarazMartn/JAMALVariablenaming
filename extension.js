@@ -134,7 +134,11 @@ function activate(context) {
 	});
 	context.subscriptions.push(disposableExtractEvents);
 
-
+	let disposablesetNewEventSubsFile = vscode.commands.registerCommand('JALVarNaming.setNewEventSubsFile', function () {
+		const extractEvents = require('./src/extractEvents.js');
+		extractEvents.setNewEventSubsFile();
+	});
+	context.subscriptions.push(disposablesetNewEventSubsFile);
 }
 // @ts-ignore
 exports.activate = activate;

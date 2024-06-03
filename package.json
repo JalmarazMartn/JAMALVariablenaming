@@ -2,9 +2,9 @@
 	"name": "JALVariableNaming",
 	"displayName": "JAL Variable Naming",
 	"description": "Ease AL Naming following BC rules",
-	"publisher": "JessAlmarazMartin",
-	"version": "0.0.37",
-	"repository": "https://github.com/JalmarazMartn/JAMALVariablenaming",	
+	"publisher": "Jes8sAlmarazMartin",
+	"version": "0.0.38",
+	"repository": "https://github.com/JalmarazMartn/JAMALVariablenaming",
 	"icon": "images/Programming-Variable-icon.png",
 	"engines": {
 		"vscode": "^1.46.0"
@@ -27,28 +27,29 @@
 	"main": "./extension.js",
 	"contributes": {
 		"menus": {
-			"editor/context": [{
-				"when": "resourceLangId == al && config.JALVarNaming.EnableContextMenus",
-				"group":"1_modification",
-				"command": "JALVarNaming.AlVarNameSel"
-		  }
-		],
-		"commandPalette": [
-			{
-			  "command": "JALVarNaming.AlVarNameSel",
-			  "when": "editorLangId == al"
-			},
-			{
-				"command": "JALVarNaming.CatchDocumentChanges",
-				"when": "editorLangId == al"
-			},
-			{
-				"command": "JALVarNaming.StopCatchDocumentChanges",
-				"when": "editorLangId == al"
-			}  
-		]
+			"editor/context": [
+				{
+					"when": "resourceLangId == al && config.JALVarNaming.EnableContextMenus",
+					"group": "1_modification",
+					"command": "JALVarNaming.AlVarNameSel"
+				}
+			],
+			"commandPalette": [
+				{
+					"command": "JALVarNaming.AlVarNameSel",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "JALVarNaming.CatchDocumentChanges",
+					"when": "editorLangId == al"
+				},
+				{
+					"command": "JALVarNaming.StopCatchDocumentChanges",
+					"when": "editorLangId == al"
+				}
+			]
 		},
-	  		"configuration": {
+		"configuration": {
 			"title": "JAL AL Naming",
 			"properties": {
 				"CharsFrom": {
@@ -73,14 +74,14 @@
 				},
 				"JALVarNaming.EnableContextMenus": {
 					"type": "boolean",
-					"default": true,					
+					"default": true,
 					"description": "Enable extension context menus"
 				},
 				"JALVarNaming.RenameDuplicateSubtype": {
 					"type": "boolean",
-					"default": false,					
+					"default": false,
 					"description": "More than one occurrences in same scope will be renamed as 'Multiple_' + Subtype + '_Old_' + old var name"
-				}				
+				}
 			}
 		},
 		"commands": [
@@ -111,13 +112,16 @@
 			{
 				"command": "JALVarNaming.ExtractEvents",
 				"title": "JAL Extract selection code to event"
+			},
+			{
+				"command": "JALVarNaming.setNewEventSubsFile",
+				"title": "JAL Select target subscriptions event file"
 			}
-			
 		],
 		"snippets": [
-			{			  
-			  "language": "al",
-			  "path": "./src/Snippets.json"
+			{
+				"language": "al",
+				"path": "./src/Snippets.json"
 			}
 		]
 	},

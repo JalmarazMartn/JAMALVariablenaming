@@ -156,3 +156,7 @@ New configuration property JALVarNaming.RenameDuplicateSubtype: More than one oc
 ## 0.0.37
 
 Beta!!! Extracting events tools. Further version with intructions.
+
+## 0.0.37
+
+Still Beta!!! Extracting events tools. Further version with intructions.
