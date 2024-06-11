@@ -155,14 +155,24 @@ function getLastLine(document) {
 async function getArrayOfVarDeclarations(document, selection) {
 
     let VarDeclarations = [];
-    let keyWordsSearched = [];
+    let keyWordsSearched = ['then',
+    'in',
+    'if',
+    'do',
+    'begin',
+    'while',
+    'else',
+    'not',
+    'case',
+    'with'];
     for (let lineNumber = selection.start.line; lineNumber <= selection.end.line; lineNumber++) {
         const initialColumn = getInitialColumn(document, lineNumber);
         const finalColumn = getFinalColumn(document, lineNumber, selection);
         for (let columnNumber = initialColumn; columnNumber < finalColumn; columnNumber++) {
             if (searchForDeclaration(document.lineAt(lineNumber).text, columnNumber)) {
                 if (!ExistsKeyWord(keyWordsSearched, document.lineAt(lineNumber).text, columnNumber)) {
-                    const posVarDeclaration = await getPosVarDeclarationHover(document, lineNumber, columnNumber);
+                    //const posVarDeclaration = await getPosVarDeclarationHover(document, lineNumber, columnNumber);
+                    const posVarDeclaration = await getPosVarDeclaration(document, lineNumber, columnNumber);
                     if (posVarDeclaration !== '') {
                         pushToArrayIfnotExists(posVarDeclaration, VarDeclarations);
                     }
@@ -206,7 +216,7 @@ async function getPosVarDeclarationHover(document, lineNumber, columnNumber) {
     const fullDeclarationRegEx = new RegExp('\\s\\S+:.+', 'i');
     const fullDeclarationMatch = AllDefinition.match(fullDeclarationRegEx);
     if (fullDeclarationMatch) {
-        varDeclaration = await getPosVarDeclaration(document, lineNumber, columnNumber);
+        varDeclaration = await getPosVarDeclarationOld(document, lineNumber, columnNumber);
         /*const fullDeclarationRegEx = new RegExp('\\s\\S+:\\S', 'i');
         const fullDeclarationMatch = AllDefinition.match(fullDeclarationRegEx);
         if (!fullDeclarationMatch) {
@@ -218,7 +228,7 @@ async function getPosVarDeclarationHover(document, lineNumber, columnNumber) {
     }
     return varDeclaration;
 }
-async function getPosVarDeclaration(document, lineNumber, columnNumber) {
+async function getPosVarDeclarationOld(document, lineNumber, columnNumber) {
 
     let varDeclaration = '';
     let locations = await vscode.commands.executeCommand('vscode.executeDefinitionProvider',
@@ -244,6 +254,42 @@ async function getPosVarDeclaration(document, lineNumber, columnNumber) {
     return varDeclaration;
 }
 
+async function getPosVarDeclaration(document, lineNumber, columnNumber) {
+    const lineText = document.lineAt(lineNumber).text;
+    let variableName = getNewWord(lineText,columnNumber);
+    
+    if (variableName == '')
+        {
+        {return ''}
+    }
+    if (lineText.search(variableName+'::') >= 0)
+        {
+            return '';
+        }
+    const regexpVariable = new RegExp('[\\s;\\(]' + variableName +':.+[;\\)]','gmi');
+	var varDecMatches = document.getText().match(regexpVariable);
+	if (!varDecMatches) 
+	{
+		return '';
+	}    
+    const columnTo = varDecMatches[0].substring(1).search(/[;|\\)]/) + 1;
+    if (columnTo <= 1)
+        {
+            return varDecMatches[0]        
+        }
+    return varDecMatches[0].substring(1,columnTo)+';';
+    /*const getSymbols = require('./getSymbols.js');
+    const documentVariables = await getSymbols.GetDocumentVariables();
+    
+    let variableDecl = documentVariables.filter((el) => el.name.toLowerCase().includes(variableName.toLowerCase()));
+    if (!variableDecl[0])
+    {
+        return '';
+    }
+    return variableDecl[0].name;*/
+
+}
+
 function pushToArrayIfnotExists(newText, ArrayOfTexts) {
     for (let index = 0; index < ArrayOfTexts.length; index++) {
         if (newText == ArrayOfTexts[index])
@@ -252,20 +298,6 @@ function pushToArrayIfnotExists(newText, ArrayOfTexts) {
     ArrayOfTexts.push(newText);
 }
 function searchForDeclaration(lineText = '', columnNumber) {
-    const reservedClauses = [' then ',
-        ' in ',
-        ' if ',
-        ' do ',
-        ' begin ',
-        ' while ',
-        ' else ',
-        ' not '];
-    for (let index = 0; index < reservedClauses.length; index++) {
-        if (lineText.substring(columnNumber - 1).search(reservedClauses[index]) == 0) {
-            return false;
-        }
-
-    }
     if (lineText.substring(columnNumber, columnNumber + 1).search(/[A-Za-z0-9]/) < 0) {
         return false;
     }
@@ -305,6 +337,15 @@ async function selectEventSubsFile() {
     return fileUri[0];
 }
 function ExistsKeyWord(keyWordsSearched, lineText, columnNumber) {
+    const newKeyWord = getNewWord(lineText, columnNumber);
+    for (let index = 0; index < keyWordsSearched.length; index++) {
+        if (newKeyWord.toUpperCase() == keyWordsSearched[index].toUpperCase()) { return true }
+    }
+    keyWordsSearched.push(newKeyWord);
+    return false
+}
+function getNewWord(lineText, columnNumber)
+{
     const substringLinText = lineText.substring(columnNumber);
     let endOfWord = 0;
     for (let index = 0; index < substringLinText.length; index++) {
@@ -315,13 +356,8 @@ function ExistsKeyWord(keyWordsSearched, lineText, columnNumber) {
         }
     }
     if (endOfWord <= 0) {
-        return true
+        return '';
     }
-    const newKeyWord = substringLinText.substring(0, endOfWord);
-    for (let index = 0; index < keyWordsSearched.length; index++) {
-        if (newKeyWord == keyWordsSearched[index]) { return true }
-    }
-    keyWordsSearched.push(newKeyWord);
-    return false
+    return(substringLinText.substring(0, endOfWord));
 }
 

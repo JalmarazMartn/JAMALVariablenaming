@@ -2,8 +2,8 @@
 	"name": "JALVariableNaming",
 	"displayName": "JAL Variable Naming",
 	"description": "Ease AL Naming following BC rules",
-	"publisher": "Jes8sAlmarazMartin",
-	"version": "0.0.38",
+	"publisher": "JessAlmarazMartin",
+	"version": "0.0.39",
 	"repository": "https://github.com/JalmarazMartn/JAMALVariablenaming",
 	"icon": "images/Programming-Variable-icon.png",
 	"engines": {
