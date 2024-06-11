@@ -159,4 +159,8 @@ Beta!!! Extracting events tools. Further version with intructions.
 
 ## 0.0.37
 
-Still Beta!!! Extracting events tools. Further version with intructions.
+Still Beta!!! Extracting events tools. Further version with instructions.
+
+## 0.0.38
+
+Extracting to event tools. Looks to like fine, but pending instructions.
