@@ -164,3 +164,13 @@ Still Beta!!! Extracting events tools. Further version with instructions.
 ## 0.0.38
 
 Extracting to event tools. Looks to like fine, but pending instructions.
+
+## 0.0.39
+
+Good beta of extracting to events tool.
+
+## 0.0.40
+
+Extracting to event tool. Looks great!! But I had to fix a little issue. Aim to discover by your self this feature, and increase your migration productivity.
+
+

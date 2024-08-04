@@ -1,4 +1,6 @@
 const vscode = require('vscode');
+const fileSelectionMsg = 'You can change file again with command: JAL Select target subscriptions event file';
+const cannotOpenFileErr = 'Cannot open target file.';
 let eventFileName = [];
 const subsDeclaration = [
     "[EventSubscriber(ObjectType::ObjectType1, ObjectType2::ObjectName, 'OnSomeEvent', 'ElementName',false, false)]",
@@ -20,6 +22,11 @@ module.exports = {
 }
 async function extractToEvent() {
     let targetDocument = await openSubscriptionsDoc();
+    if (!targetDocument)
+        {
+            vscode.window.showErrorMessage(cannotOpenFileErr + ' ' + fileSelectionMsg,{"modal":true});
+            return;
+        }
     const document = await vscode.window.activeTextEditor.document;
     const selection = vscode.window.activeTextEditor.selection;
     let previousLines = getPreviousLines(document, selection.start.line);
@@ -139,7 +146,12 @@ async function createNewLine(targetDocument, lineText = '', WSEdit, lineNumber =
         lineText + '\n');
 }
 async function openSubscriptionsDoc() {
-    var targetDocument = await vscode.workspace.openTextDocument(await getDocumentFullName());
+    const documentFullName = await getDocumentFullName();
+    try {
+        var targetDocument = await vscode.workspace.openTextDocument(documentFullName);   
+    } catch (error) {        
+        return;
+    }
     return targetDocument;
 }
 
@@ -316,7 +328,7 @@ function searchForDeclaration(lineText = '', columnNumber) {
 async function getDocumentFullName() {
     if (!eventFileName[0]) {
         await setNewEventSubsFile();
-        vscode.window.showInformationMessage('You can change file again with command: JAL Select target subscriptions event file');
+        vscode.window.showInformationMessage(fileSelectionMsg);
     }
     return eventFileName[0];
 }
