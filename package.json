@@ -3,7 +3,7 @@
 	"displayName": "JAL Variable Naming",
 	"description": "Ease AL Naming following BC rules",
 	"publisher": "JessAlmarazMartin",
-	"version": "0.0.40",
+	"version": "0.0.41",
 	"repository": "https://github.com/JalmarazMartn/JAMALVariablenaming",
 	"icon": "images/Programming-Variable-icon.png",
 	"engines": {
@@ -48,8 +48,7 @@
 					"when": "editorLangId == al"
 				},
 				{
-					"command": "JALVarNaming.ExtractEvents",
-					"when": "editorLangId == al && editorHasSelection"
+					"command": "JALVarNaming.ExtractEvents"
 				},
 				{
 					"command": "JALVarNaming.setNewEventSubsFile",

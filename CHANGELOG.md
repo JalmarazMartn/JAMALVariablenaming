@@ -173,4 +173,7 @@ Good beta of extracting to events tool.
 
 Extracting to event tool. Looks great!! But I had to fix a little issue. Aim to discover by your self this feature, and increase your migration productivity.
 
+## 0.0.41
+
+Extracting to event tool. Improve the naming of subscriptions procedure.
 

@@ -63,6 +63,9 @@ module.exports = {
 		const documentation = 'Write type and subtype of the variable and when write semicolon will be renamed'; 	
 		//return(SnippetVariableAL());
 		return(SnippetVariableALArg(commandName,detail,insertText,documentation));		
+	},
+	GetNewVarName: function name(VarSubType='') {
+		return(GetNewVarName(VarSubType))
 	}
 }
 async function lineProcess(i, CurrDoc) {

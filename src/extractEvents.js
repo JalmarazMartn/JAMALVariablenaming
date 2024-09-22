@@ -1,10 +1,11 @@
 const vscode = require('vscode');
+
 const fileSelectionMsg = 'You can change file again with command: JAL Select target subscriptions event file';
 const cannotOpenFileErr = 'Cannot open target file.';
 let eventFileName = [];
 const subsDeclaration = [
     "[EventSubscriber(ObjectType::ObjectType1, ObjectType2::ObjectName, 'OnSomeEvent', 'ElementName',false, false)]",
-    'local procedure MyProcedure()',
+    'local procedure ',
     'begin',
     'end;'
 ];
@@ -35,7 +36,7 @@ async function extractToEvent() {
     const eventDeclaration = getEventDeclaration(document);
     const varDeclarations = await getArrayOfVarDeclarations(document, selection);
     createNewLine(targetDocument, eventDeclaration, WSEdit, nextLineNumber);
-    createNewLine(targetDocument, subsDeclaration[1], WSEdit, nextLineNumber);
+    createNewLine(targetDocument, subsDeclaration[1] + getProcedureName(document,selection.start.line), WSEdit, nextLineNumber);
     if (varDeclarations.length != 0) {
         createNewLine(targetDocument, 'var', WSEdit, nextLineNumber);
         createNewLine(targetDocument, '//-----------Posible var declarations', WSEdit, nextLineNumber);
@@ -87,6 +88,7 @@ function getLinesProcContainer(document, startLine = 0) {
 function getPlaceOfCode(document, lineNumber) {
     const regexProc = new RegExp('procedure.+', 'i');
     const regexTrig = new RegExp('trigger.+', 'i')
+    
     let procMatch = regexProc.exec(document.lineAt(lineNumber).text);
     if (procMatch !== null) {
         return (procMatch[0])
@@ -208,63 +210,6 @@ function getFinalColumn(document, lineNumber, selection) {
     }
     return document.lineAt(lineNumber).text.length;
 }
-async function getPosVarDeclarationHover(document, lineNumber, columnNumber) {
-
-    let varDeclaration = '';
-    //const borrar = document.lineAt(lineNumber).text.substring(columnNumber - 1);
-    //console.log(borrar);
-    const siganturaFunction = await vscode.commands.executeCommand('vscode.executeHoverProvider', document.uri, new vscode.Position(lineNumber, columnNumber));
-    if (!siganturaFunction) {
-        return varDeclaration;
-    }
-    const AllDefinition = siganturaFunction[0].contents[0].value;
-    const fieldRegex = new RegExp('\\(field\\)', 'i');
-    if (AllDefinition.search(fieldRegex) >= 0) {
-        return varDeclaration;
-    }
-    if (AllDefinition.search(/procedure/i) >= 0) {
-        return varDeclaration;
-    }
-    const fullDeclarationRegEx = new RegExp('\\s\\S+:.+', 'i');
-    const fullDeclarationMatch = AllDefinition.match(fullDeclarationRegEx);
-    if (fullDeclarationMatch) {
-        varDeclaration = await getPosVarDeclarationOld(document, lineNumber, columnNumber);
-        /*const fullDeclarationRegEx = new RegExp('\\s\\S+:\\S', 'i');
-        const fullDeclarationMatch = AllDefinition.match(fullDeclarationRegEx);
-        if (!fullDeclarationMatch) {
-            varDeclaration = await getPosVarDeclaration(document, lineNumber, columnNumber);
-        }
-        else {
-            varDeclaration = fullDeclarationMatch[0] + ';';
-        }*/
-    }
-    return varDeclaration;
-}
-async function getPosVarDeclarationOld(document, lineNumber, columnNumber) {
-
-    let varDeclaration = '';
-    let locations = await vscode.commands.executeCommand('vscode.executeDefinitionProvider',
-        document.uri, new vscode.Position(lineNumber, columnNumber));
-    if (!locations) {
-        return varDeclaration;
-    }
-    if (locations.length == 0) {
-        return varDeclaration;
-    }
-
-    const lineText = document.lineAt(locations[0].range.start.line).text;
-    const columnFrom = locations[0].range.start.character;
-    const columnTo = lineText.substring(columnFrom).search(/[;|\\)]/) + columnFrom;
-    if (columnTo > columnFrom) {
-        varDeclaration = lineText.substring(columnFrom, columnTo) + ';';
-    }
-    /*const fullDeclarationRegEx = new RegExp(document.getText(locations[0].range) + ':.+;?', 'i');
-    const fullDeclarationMatch = lineText.match(fullDeclarationRegEx);
-    if (fullDeclarationMatch) {
-        varDeclaration = fullDeclarationMatch[0];
-    }*/
-    return varDeclaration;
-}
 
 async function getPosVarDeclaration(document, lineNumber, columnNumber) {
     const lineText = document.lineAt(lineNumber).text;
@@ -371,5 +316,81 @@ function getNewWord(lineText, columnNumber)
         return '';
     }
     return(substringLinText.substring(0, endOfWord));
+}
+function getProcedureName(document,startLine)
+{    
+//aqui
+    const regexProc = new RegExp('procedure', 'i');
+    const regexTrig = new RegExp('trigger', 'i')
+    const regexProcParams = /\(.*/;
+    const objectDeclaration = getObjectDeclaration(document);
+    const RenameVars = require('./RenameVars.js')    
+    const objectConvertedName = RenameVars.GetNewVarName(objectDeclaration.ObjectName.toString());
+    //const objectType = objectDeclaration.ObjectType[0].toUpperCase() + objectDeclaration.ObjectType.substring(1);
+    let procContainer = getLinesProcContainer(document,startLine);
+    procContainer = procContainer.replace(regexProc,'');
+    procContainer = procContainer.replace(regexTrig,'');
+    procContainer = procContainer.replace(regexTrig,'');
+    procContainer = procContainer.replace(regexProcParams,'');
+    procContainer = RenameVars.GetNewVarName(procContainer);
+    return /*objectType +*/ objectConvertedName + '_' + procContainer + '()';
+}
+//////////////////old Code///////////////////////////
+async function getPosVarDeclarationHover(document, lineNumber, columnNumber) {//no se usa ya
+
+    let varDeclaration = '';
+    //const borrar = document.lineAt(lineNumber).text.substring(columnNumber - 1);
+    //console.log(borrar);
+    const siganturaFunction = await vscode.commands.executeCommand('vscode.executeHoverProvider', document.uri, new vscode.Position(lineNumber, columnNumber));
+    if (!siganturaFunction) {
+        return varDeclaration;
+    }
+    const AllDefinition = siganturaFunction[0].contents[0].value;
+    const fieldRegex = new RegExp('\\(field\\)', 'i');
+    if (AllDefinition.search(fieldRegex) >= 0) {
+        return varDeclaration;
+    }
+    if (AllDefinition.search(/procedure/i) >= 0) {
+        return varDeclaration;
+    }
+    const fullDeclarationRegEx = new RegExp('\\s\\S+:.+', 'i');
+    const fullDeclarationMatch = AllDefinition.match(fullDeclarationRegEx);
+    if (fullDeclarationMatch) {
+        varDeclaration = await getPosVarDeclarationOld(document, lineNumber, columnNumber);
+        /*const fullDeclarationRegEx = new RegExp('\\s\\S+:\\S', 'i');
+        const fullDeclarationMatch = AllDefinition.match(fullDeclarationRegEx);
+        if (!fullDeclarationMatch) {
+            varDeclaration = await getPosVarDeclaration(document, lineNumber, columnNumber);
+        }
+        else {
+            varDeclaration = fullDeclarationMatch[0] + ';';
+        }*/
+    }
+    return varDeclaration;
+}
+async function getPosVarDeclarationOld(document, lineNumber, columnNumber) {
+
+    let varDeclaration = '';
+    let locations = await vscode.commands.executeCommand('vscode.executeDefinitionProvider',
+        document.uri, new vscode.Position(lineNumber, columnNumber));
+    if (!locations) {
+        return varDeclaration;
+    }
+    if (locations.length == 0) {
+        return varDeclaration;
+    }
+
+    const lineText = document.lineAt(locations[0].range.start.line).text;
+    const columnFrom = locations[0].range.start.character;
+    const columnTo = lineText.substring(columnFrom).search(/[;|\\)]/) + columnFrom;
+    if (columnTo > columnFrom) {
+        varDeclaration = lineText.substring(columnFrom, columnTo) + ';';
+    }
+    /*const fullDeclarationRegEx = new RegExp(document.getText(locations[0].range) + ':.+;?', 'i');
+    const fullDeclarationMatch = lineText.match(fullDeclarationRegEx);
+    if (fullDeclarationMatch) {
+        varDeclaration = fullDeclarationMatch[0];
+    }*/
+    return varDeclaration;
 }
 
