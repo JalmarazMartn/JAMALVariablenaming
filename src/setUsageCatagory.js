@@ -11,7 +11,7 @@ module.exports = {
     }
 }
 async function setUsageCategory() {
-    await processMenuTxtfile();    
+    await processMenuTxtfile();
     await processMenuNodes(menuNodeList);
 }
 async function processMenuNodes(menuNodeList) {
@@ -51,7 +51,7 @@ function GetCurrentObjectFromLineText(LineText) {
 async function appendUsageinDocument(ALDocument, newUsageCategory) {
     const WSEdit = new vscode.WorkspaceEdit;
     const DeclarationLineNumber = GetDeclarationLineNumber(ALDocument);
-    const PositionOpen = new vscode.Position(DeclarationLineNumber+2, 0);
+    const PositionOpen = new vscode.Position(DeclarationLineNumber + 2, 0);
     let newUsageCategoryProperty = 'UsageCategory = ' + newUsageCategory + ';';
     const usageRegex = /UsageCategory\s*=\s*\w+;/gmi;
     let newText = '';
@@ -59,15 +59,14 @@ async function appendUsageinDocument(ALDocument, newUsageCategory) {
         newText = ALDocument.getText().replace(usageRegex, newUsageCategoryProperty);
         if (newText == ALDocument.getText()) {
             return
-        }        
+        }
     }
-    else
-    {
-    newUsageCategoryProperty = '{\r\n'+newUsageCategoryProperty + '\r\n'+ 'ApplicationArea = All;\r\n';
-    newText = ALDocument.getText().replace('{\r\n', newUsageCategoryProperty);
-    //await WSEdit.insert(ALDocument.uri, PositionOpen, newUsageCategoryProperty);
+    else {
+        newUsageCategoryProperty = '{\r\n' + newUsageCategoryProperty + '\r\n' + 'ApplicationArea = All;\r\n';
+        newText = ALDocument.getText().replace('{\r\n', newUsageCategoryProperty);
+        //await WSEdit.insert(ALDocument.uri, PositionOpen, newUsageCategoryProperty);
     }
-    WSEdit.replace(ALDocument.uri, new vscode.Range(new vscode.Position(0,0),new vscode.Position(ALDocument.lineCount,0)), newText);
+    WSEdit.replace(ALDocument.uri, new vscode.Range(new vscode.Position(0, 0), new vscode.Position(ALDocument.lineCount, 0)), newText);
     await vscode.workspace.applyEdit(WSEdit);
 }
 async function processMenuTxtfile() {
@@ -84,28 +83,39 @@ async function processMenuTxtfile() {
     const itemRegex1 = /RunObjectType=(\w+)/gmi;
     const itemRegex2 = /RunObjectID=(\d+)/gmi;
     const itemRegex3 = /DepartmentCategory=(\w+)/gmi;
+    const existsCategory = menuTxtFile.search(itemRegex3) > -1;
     let menuLines = menuTxtFile.split('\r\n');
     menuNodeList = [];
     for (let index = 0; index < menuLines.length; index++) {
-        let match3 = itemRegex3.exec(menuLines[index]);
-        if (match3) {
-            menuNode.UsageCategory = match3[1];
-            if (menuNode.UsageCategory == 'Reports') {
-                menuNode.UsageCategory = 'ReportsAndAnalysis';
+        if (existsCategory) {
+            let match3 = itemRegex3.exec(menuLines[index]);
+            if (match3) {
+                menuNode.UsageCategory = match3[1];
+                if (menuNode.UsageCategory == 'Reports') {
+                    menuNode.UsageCategory = 'ReportsAndAnalysis';
+                }
+                PushNewNode();
             }
-            menuNodeList.push({
-                Type: menuNode.Type,
-                Id: menuNode.Id,
-                UsageCategory: menuNode.UsageCategory
-            });
         }
         let match2 = itemRegex2.exec(menuLines[index]);
         if (match2) {
             menuNode.Id = match2[1];
+            if (!existsCategory) {
+                menuNode.UsageCategory = 'SetNewCategory';
+                PushNewNode();
+            }
         }
         let match1 = itemRegex1.exec(menuLines[index]);
         if (match1) {
             menuNode.Type = match1[1].toLowerCase();
         }
     }
+}
+
+function PushNewNode() {
+    menuNodeList.push({
+        Type: menuNode.Type,
+        Id: menuNode.Id,
+        UsageCategory: menuNode.UsageCategory
+    });
 }

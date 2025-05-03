@@ -177,3 +177,6 @@ Extracting to event tool. Looks great!! But I had to fix a little issue. Aim to 
 
 Extracting to event tool. Improve the naming of subscriptions procedure.
 
+## 0.0.42
+
+Change of usage tool form C/Side menu, to use old classic menu.

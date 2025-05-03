@@ -52,6 +52,8 @@ With this command you can set the usage category for Pages and Reports from an o
 * And then the command will set automatically the usage category for all the objects in the workspace reading them from menu file.
 * Go to File > Save all.
 
+Note: If menu file comes from classic version, the usage will be setted to "SetNewCategory" for all objects.
+
 ## Option to Enum: Beta
 
 Utility to convert Options to enum. Steps:
