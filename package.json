@@ -3,11 +3,11 @@
 	"displayName": "JAL Variable Naming",
 	"description": "Ease AL Naming following BC rules",
 	"publisher": "JessAlmarazMartin",
-	"version": "0.0.42",
+	"version": "0.0.43",
 	"repository": "https://github.com/JalmarazMartn/JAMALVariablenaming",
 	"icon": "images/Programming-Variable-icon.png",
 	"engines": {
-		"vscode": "^1.46.0"
+		"vscode": "^1.98.0"
 	},
 	"author": {
 		"name": "Jesús Almaraz Martín",
@@ -130,7 +130,32 @@
 				"language": "al",
 				"path": "./src/Snippets.json"
 			}
-		]
+		],
+        "languageModelTools": [
+				{
+					"name": "jam-getALRecordFields",
+					"tags": [
+						"AL Record",
+						"Fields",
+						"Fields definition"
+					],
+					"toolReferenceName": "jam-getALRecordFields",
+					"displayName": "Record Fields Extractor",
+					"modelDescription": "Access to AL record fields given a record name. Returns list of field names and types.",
+					"canBeReferencedInPrompt": true,
+					"icon": "$(tools)",
+					"inputSchema": {
+						"type": "object",
+						"properties": {
+							"record": {
+								"type": "string",
+								"description": "Record you want to select fields from. The record definition variables in Al is this way Variablename: Record RecordName. You pass the Variablename and get a text that includes all field names and types."
+							}
+						},
+						"required": ["Record"]
+					}
+				}
+			]		
 	},
 	"scripts": {
 		"lint": "eslint .",
@@ -138,7 +163,7 @@
 		"test": "node ./test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.46.0",
+		"@types/vscode": "^1.98.0",
 		"@types/glob": "^7.1.3",
 		"@types/mocha": "^8.0.0",
 		"@types/node": "^14.0.27",

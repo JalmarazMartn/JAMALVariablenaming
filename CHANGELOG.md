@@ -180,3 +180,7 @@ Extracting to event tool. Improve the naming of subscriptions procedure.
 ## 0.0.42
 
 Change of usage tool form C/Side menu, to use old classic menu.
+
+## 0.0.43
+
+LM tool for getting all fields of a table. jam-getALRecordFields

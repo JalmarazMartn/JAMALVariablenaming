@@ -104,6 +104,10 @@ This extension contributes the following settings:
 * `JALVarNaming.EnableContextMenus`: Option to enable extension context menus.
 * `JALVarNaming.RenameDuplicateSubtype`: Option to enable this behavior: more than one occurrences in same scope will be renamed as 'Multiple_' + Subtype + '_Old_' + old var name
 
+## LM tools
+
+jam-getALRecordFields : Get all fields of a table. Useful for ease agents edtion works transfering values.
+
 ## Known Issues
 
 Calling out known issues can help limit users opening duplicate issues against your extension.
