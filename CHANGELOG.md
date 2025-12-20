@@ -184,3 +184,8 @@ Change of usage tool form C/Side menu, to use old classic menu.
 ## 0.0.43
 
 LM tool for getting all fields of a table. jam-getALRecordFields
+
+## 0.0.44
+## 0.0.45
+
+Refinements to jam-getALRecordFields tool.

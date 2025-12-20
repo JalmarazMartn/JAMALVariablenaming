@@ -23,7 +23,7 @@ function registerGetALRecordFields(context) {
 }
 
 module.exports = {
-    registerRulesAndDiagnostics: registerGetALRecordFields
+    registerGetALRecordFields
 };
 async function getRedcordFields(recordName) {
     let document = vscode.window.activeTextEditor.document;    

@@ -3,7 +3,7 @@
 	"displayName": "JAL Variable Naming",
 	"description": "Ease AL Naming following BC rules",
 	"publisher": "JessAlmarazMartin",
-	"version": "0.0.43",
+	"version": "0.0.45",
 	"repository": "https://github.com/JalmarazMartn/JAMALVariablenaming",
 	"icon": "images/Programming-Variable-icon.png",
 	"engines": {
@@ -149,10 +149,10 @@
 						"properties": {
 							"record": {
 								"type": "string",
-								"description": "Record you want to select fields from. The record definition variables in Al is this way Variablename: Record RecordName. You pass the Variablename and get a text that includes all field names and types."
+								"description": "record you want to select fields from. The record definition variables in Al is this way 'Variablename: Record RecordName'. You pass the Variablename and get a text that includes all field names and types."
 							}
 						},
-						"required": ["Record"]
+						"required": ["record"]
 					}
 				}
 			]		
