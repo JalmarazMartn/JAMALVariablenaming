@@ -1,12 +1,14 @@
 
----
-name: jam-getalrecordfields
-description: Extracts all field names and types from an AL record variable. Use this skill to generate documentation, code, or validation logic for AL records by providing the variable name (not just the table name). Especially useful for AL development, code generation, and technical documentation.
-argument-hint: '[record variable name]'
-user-invokable: true
+
 ---
 
 # jam-getALRecordFields Skill
+
+name: jam-getalrecordfields
+description: Extracts all field names and types from an AL record variable. Use this skill to generate documentation, code, or validation logic for AL records by providing the variable name (not just the table name). Especially useful for AL development, code generation, and technical documentation.
+argument-hint: '[record variable name]'
+allowed-tools: jam-getALRecordFields, Read, Edit
+user-invokable: true
 
 ## What this skill does
 Extracts all field names and types from an AL record variable. Use this skill to:
