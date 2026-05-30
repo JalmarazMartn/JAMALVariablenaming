@@ -189,3 +189,7 @@ LM tool for getting all fields of a table. jam-getALRecordFields
 ## 0.0.45
 
 Refinements to jam-getALRecordFields tool.
+## 0.0.46 
+
+New tool to open AL object in editor, using the al-preview URI scheme. jam-openALObjectInEditor.
+New Tool to get AL object definition, using the al-preview URI scheme. jam-getALObjectDefinition.

@@ -3,12 +3,15 @@
 	"displayName": "JAL Variable Naming",
 	"description": "Ease AL Naming following BC rules",
 	"publisher": "JessAlmarazMartin",
-	"version": "0.0.45",
+	"version": "0.0.46",
 	"repository": "https://github.com/JalmarazMartn/JAMALVariablenaming",
 	"icon": "images/Programming-Variable-icon.png",
 	"engines": {
-		"vscode": "^1.98.0"
+		"vscode": "^1.115.0"
 	},
+	"enabledApiProposals": [
+		"languageModelAPI"
+	],
 	"author": {
 		"name": "Jesús Almaraz Martín",
 		"email": "JalmarazMartn@gmail.com"
@@ -53,7 +56,18 @@
 				{
 					"command": "JALVarNaming.setNewEventSubsFile",
 					"when": "editorLangId == al && editorIsOpen"
-				}				
+				},
+				{
+					"command": "JALVarNaming.Prueba"
+				},
+				{
+					"command": "JALVarNaming.createOptionsCSV",
+					"when": "editorLangId == al && editorIsOpen"
+				},
+				{
+					"command": "JALVarNaming.processEnumFile",
+					"when": "editorLangId == al && editorIsOpen"
+				}
 			]
 		},
 		"configuration": {
@@ -123,6 +137,10 @@
 			{
 				"command": "JALVarNaming.setNewEventSubsFile",
 				"title": "JAL Select target subscriptions event file"
+			},
+			{
+				"command": "JALVarNaming.Prueba",
+				"title": "JAL Prueba for muliple tools"
 			}
 		],
 		"snippets": [
@@ -131,31 +149,103 @@
 				"path": "./src/Snippets.json"
 			}
 		],
-        "languageModelTools": [
-				{
-					"name": "jam-getALRecordFields",
-					"tags": [
-						"AL Record",
-						"Fields",
-						"Fields definition"
-					],
-					"toolReferenceName": "jam-getALRecordFields",
-					"displayName": "Record Fields Extractor",
-					"modelDescription": "Access to AL record fields given a record name. Returns list of field names and types.",
-					"canBeReferencedInPrompt": true,
-					"icon": "$(tools)",
-					"inputSchema": {
-						"type": "object",
-						"properties": {
-							"record": {
-								"type": "string",
-								"description": "record you want to select fields from. The record definition variables in Al is this way 'Variablename: Record RecordName'. You pass the Variablename and get a text that includes all field names and types."
-							}
-						},
-						"required": ["record"]
-					}
+		"languageModelTools": [
+			{
+				"name": "jam-getALRecordFields",
+				"tags": [
+					"AL Record",
+					"Fields",
+					"Fields definition"
+				],
+				"toolReferenceName": "jam-getALRecordFields",
+				"displayName": "Record Fields Extractor",
+				"modelDescription": "Access to AL record fields given a record name. Returns list of field names and types.",
+				"canBeReferencedInPrompt": true,
+				"icon": "$(tools)",
+				"inputSchema": {
+					"type": "object",
+					"properties": {
+						"record": {
+							"type": "string",
+							"description": "record you want to select fields from. The record definition variables in Al is this way 'Variablename: Record RecordName'. You pass the Variablename and get a text that includes all field names and types."
+						}
+					},
+					"required": [
+						"record"
+					]
 				}
-			]		
+			},
+			{
+				"name": "jam-getALObjectDefinition",
+				"tags": [
+					"AL Object",
+					"Table/Codeunit/Report/PageCode Object",
+					"Fields definition"
+				],
+				"toolReferenceName": "jam-getALObjectDefinition",
+				"displayName": "AL Object Definition Extractor",
+				"modelDescription": "Access to AL Object definition, input Object name+Object type+Objetc ID. Returns a text with all code of object definition.",
+				"canBeReferencedInPrompt": true,
+				"icon": "$(tools)",
+				"inputSchema": {
+					"type": "object",
+					"properties": {
+						"objectName": {
+							"type": "string",
+							"description": "Name of the object"
+						},
+						"objectType": {
+							"type": "string",
+							"description": "Type of the object: Table,Page,Codeunit,Report,XMLPort, etc."
+						},
+						"objectID": {
+							"type": "integer",
+							"description": "ID of the object"
+						}
+					},
+					"required": [
+						"objectName",
+						"objectType",
+						"objectID"
+					]
+				}
+			},
+			{
+				"name": "jam-OpenALObjectInEditor",
+				"tags": [
+					"AL Object",
+					"Open Object",
+					"Editor"
+				],
+				"toolReferenceName": "jam-OpenALObjectInEditor",
+				"displayName": "Open AL Object in Editor",
+				"modelDescription": "Opens an AL object definition in the VS Code editor. Input Object name+Object type+Object ID.",
+				"canBeReferencedInPrompt": true,
+				"icon": "$(tools)",
+				"inputSchema": {
+					"type": "object",
+					"properties": {
+						"objectName": {
+							"type": "string",
+							"description": "Name of the object"
+						},
+						"objectType": {
+							"type": "string",
+							"description": "Type of the object: Table,Page,Codeunit,Report,XMLPort, etc."
+						},
+						"objectID": {
+							"type": "integer",
+							"description": "ID of the object"
+						}
+					},
+					"required": [
+						"objectName",
+						"objectType",
+						"objectID"
+					]
+				}
+			}
+		]
 	},
 	"scripts": {
 		"lint": "eslint .",
@@ -163,7 +253,7 @@
 		"test": "node ./test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.98.0",
+		"@types/vscode": "^1.115.0",
 		"@types/glob": "^7.1.3",
 		"@types/mocha": "^8.0.0",
 		"@types/node": "^14.0.27",
