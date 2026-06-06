@@ -152,7 +152,7 @@ function activate(context) {
 
 	async function logSalesHeader() {
 			const AIToolsDefinition = require('./src/AIToolsDefinition.js');
-			console.log(await AIToolsDefinition.GetALDefinition('Sales Header','table',36));
+			console.log(await AIToolsDefinition.GetALDefinition('Sales Header','table',0));
 
 }
 

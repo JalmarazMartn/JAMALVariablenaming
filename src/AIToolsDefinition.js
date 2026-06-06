@@ -201,8 +201,11 @@ async function GetALDefinition(ALObjectName, ALObjectType, ALObjectID = 0) {
  * @returns {vscode.Uri}
  */
 function makeLocationUri(ALObjectID, ALObjectType, ALObjectName) {
-    let objectPath;
+    let objectPath;    
     if (ALObjectID > 0) {
+        if (!ALObjectName || ALObjectName.trim() === '') {
+            ALObjectName = 'SomeObjectName';
+        }
         objectPath = `${ALObjectType}/${ALObjectID}/${ALObjectName}.dal`;
     } else {
         // If no ID, we might need to find it. For now, we'll assume it's not strictly needed for all cases
@@ -221,7 +224,7 @@ function makeLocationUri(ALObjectID, ALObjectType, ALObjectName) {
  * @returns {Promise<string|undefined>}
  */
 async function OpenALObjectEditor(ALObjectName, ALObjectType, ALObjectID = 0) {
-    if (!ALObjectName || !ALObjectType) {
+    if (!ALObjectType) {
         vscode.window.showErrorMessage('AL Object Name and Type are required to get the definition.');
         return undefined;
     }

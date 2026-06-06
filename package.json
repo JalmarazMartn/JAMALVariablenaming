@@ -184,7 +184,7 @@
 				],
 				"toolReferenceName": "jam-getALObjectDefinition",
 				"displayName": "AL Object Definition Extractor",
-				"modelDescription": "Access to AL Object definition, input Object name+Object type+Objetc ID. Returns a text with all code of object definition.",
+				"modelDescription": "Access to AL Object definition, input Object name+Object type+Objetc ID. Returns a text with all code of object definition. ObjectName Not mandatory could be blank",
 				"canBeReferencedInPrompt": true,
 				"icon": "$(tools)",
 				"inputSchema": {
@@ -219,7 +219,7 @@
 				],
 				"toolReferenceName": "jam-OpenALObjectInEditor",
 				"displayName": "Open AL Object in Editor",
-				"modelDescription": "Opens an AL object definition in the VS Code editor. Input Object name+Object type+Object ID.",
+				"modelDescription": "Opens an AL object definition in the VS Code editor. Input Object name+Object type+Object ID. ObjectName Not mandatory could be blank",
 				"canBeReferencedInPrompt": true,
 				"icon": "$(tools)",
 				"inputSchema": {
